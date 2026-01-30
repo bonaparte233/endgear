@@ -27,9 +27,9 @@ export const translations = {
       noCompatible: '该属性无适配材料'
     },
     equipment: {
-      accessory: '配件',
-      glove: '护手',
-      armor: '护甲'
+      Accessory: '配件',
+      Glove: '护手',
+      Armor: '护甲'
     }
   },
   en: {
@@ -56,9 +56,9 @@ export const translations = {
       noCompatible: 'NO COMPATIBLE MATERIALS FOUND FOR THIS ATTRIBUTE'
     },
     equipment: {
-      accessory: 'ACCESSORY',
-      glove: 'GLOVE',
-      armor: 'ARMOR'
+      Accessory: 'ACCESSORY',
+      Glove: 'GLOVE',
+      Armor: 'ARMOR'
     }
   }
 };
