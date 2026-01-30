@@ -1,4 +1,4 @@
-- [ ] 修改 `Home.tsx`：检查 `ScrollArea` 的父容器高度设置，确保其能正确撑开并产生滚动条
-- [ ] 修改 `EquipmentCard.tsx`：移除 `rounded` 类，改为直角
-- [ ] 修改 `EquipmentCard.tsx`：调整装饰性角标的 CSS 定位，确保不被 `overflow: hidden` 截断
-- [ ] 检查左侧面板的 flex 布局，确保头部固定，列表区域自适应剩余高度
+- [ ] 修改 `Home.tsx`：移除所有 `ScrollArea` 组件
+- [ ] 修改 `Home.tsx`：使用原生的 `div` 容器，并添加 `overflow-y-auto` 类
+- [ ] 修改 `index.css`：添加自定义滚动条样式（可选，为了美观）
+- [ ] 检查右侧面板的 flex 布局结构，确保列表容器的高度被正确限制在视口内

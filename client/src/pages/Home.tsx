@@ -3,7 +3,7 @@ import { Equipment, GOLD_EQUIPMENTS } from '@/lib/data';
 import { findForgeMaterials, AttributeMatch } from '@/lib/forge-logic';
 import { EquipmentCard } from '@/components/EquipmentCard';
 import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
+
 import { ArrowRight, RefreshCw, Zap, ArrowUpCircle, MinusCircle, Languages } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/lib/i18n';
@@ -65,7 +65,7 @@ export default function Home() {
             </span>
           </div>
           
-          <ScrollArea className="flex-1 h-full px-4 py-4">
+          <div className="flex-1 overflow-y-auto px-4 py-4 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-20">
               {GOLD_EQUIPMENTS.map(eq => (
                 <EquipmentCard
@@ -76,7 +76,7 @@ export default function Home() {
                 />
               ))}
             </div>
-          </ScrollArea>
+          </div>
         </div>
       </div>
 
@@ -134,7 +134,7 @@ export default function Home() {
             </div>
 
             {/* 按属性分组的推荐列表 */}
-            <ScrollArea className="flex-1">
+            <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
               <div className="p-6 space-y-8">
                 {attributeMatches.map((match, index) => (
                   <div key={index} className="space-y-4">
@@ -190,7 +190,7 @@ export default function Home() {
                   </div>
                 ))}
               </div>
-            </ScrollArea>
+            </div>
           </div>
         ) : (
           /* 空状态引导 */
