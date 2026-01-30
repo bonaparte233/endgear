@@ -1,5 +1,6 @@
 import { Equipment, ATTRIBUTE_MAP, TYPE_MAP } from "@/lib/data";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/lib/i18n";
 
 interface EquipmentCardProps {
   equipment: Equipment;
@@ -19,20 +20,23 @@ export function EquipmentCard({
   className,
   comparisonResult 
 }: EquipmentCardProps) {
+  const { t } = useLanguage();
+  
   return (
     <div 
       onClick={onClick}
       className={cn(
         "relative group cursor-pointer transition-all duration-300",
         "bg-card border border-border/40 hover:border-primary/60",
-        "clip-corners overflow-hidden",
+        // 移除 clip-corners 和 overflow-hidden 以避免遮挡外部装饰
+        // 改为直角设计
         isSelected && "border-primary ring-1 ring-primary/50 bg-primary/5",
         className
       )}
     >
-      {/* 装饰性角标 */}
-      <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-primary/30 group-hover:border-primary transition-colors" />
-      <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-primary/30 group-hover:border-primary transition-colors" />
+      {/* 装饰性角标 - 调整位置到边框内部或正好压在边框上 */}
+      <div className="absolute -top-px -left-px w-3 h-3 border-t-2 border-l-2 border-primary/30 group-hover:border-primary transition-colors z-10" />
+      <div className="absolute -bottom-px -right-px w-3 h-3 border-b-2 border-r-2 border-primary/30 group-hover:border-primary transition-colors z-10" />
       
       {/* 内容区域 */}
       <div className="p-4 flex flex-col gap-3">
@@ -43,12 +47,12 @@ export function EquipmentCard({
               {equipment.name}
             </h3>
             <div className="flex gap-2 mt-1 text-xs text-muted-foreground font-mono uppercase">
-              <span className="bg-muted px-1.5 py-0.5 rounded-sm">{TYPE_MAP[equipment.type]}</span>
-              <span className="border border-border px-1.5 py-0.5 rounded-sm">{equipment.set}</span>
+              <span className="bg-muted px-1.5 py-0.5">{t(`equipment.${equipment.type}`)}</span>
+              <span className="border border-border px-1.5 py-0.5">{equipment.set}</span>
             </div>
           </div>
           {/* 稀有度指示器 */}
-          <div className="w-2 h-2 rounded-full bg-yellow-500 shadow-[0_0_8px_rgba(234,179,8,0.6)]" />
+          <div className="w-2 h-2 bg-yellow-500 shadow-[0_0_8px_rgba(234,179,8,0.6)]" />
         </div>
 
         {/* 属性列表 */}

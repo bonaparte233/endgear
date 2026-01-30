@@ -1,6 +1,4 @@
-- [ ] 创建 `LanguageContext` 管理语言状态
-- [ ] 创建翻译资源文件 `translations.ts`
-- [ ] 修改 `Home.tsx`：添加语言切换按钮
-- [ ] 修改 `Home.tsx`：将所有硬编码文本替换为翻译键
-- [ ] 修改 `EquipmentCard.tsx`：将硬编码文本替换为翻译键
-- [ ] 确保中文模式下界面友好，英文仅保留装饰性元素
+- [ ] 修改 `Home.tsx`：检查 `ScrollArea` 的父容器高度设置，确保其能正确撑开并产生滚动条
+- [ ] 修改 `EquipmentCard.tsx`：移除 `rounded` 类，改为直角
+- [ ] 修改 `EquipmentCard.tsx`：调整装饰性角标的 CSS 定位，确保不被 `overflow: hidden` 截断
+- [ ] 检查左侧面板的 flex 布局，确保头部固定，列表区域自适应剩余高度

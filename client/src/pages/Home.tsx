@@ -31,7 +31,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col md:flex-row overflow-hidden">
       {/* 左侧面板：装备选择 */}
-      <div className="w-full md:w-1/2 lg:w-5/12 border-r border-border/30 flex flex-col h-screen relative z-10 bg-background/95 backdrop-blur-sm">
+      <div className="w-full md:w-1/2 lg:w-5/12 border-r border-border/30 flex flex-col h-screen max-h-screen relative z-10 bg-background/95 backdrop-blur-sm">
         <div className="p-6 border-b border-border/30 bg-muted/20">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-3">
@@ -55,7 +55,7 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="flex-1 overflow-hidden flex flex-col">
+        <div className="flex-1 min-h-0 flex flex-col">
           <div className="p-4 bg-muted/10 border-b border-border/20 flex justify-between items-center">
             <span className="text-xs font-mono uppercase text-muted-foreground tracking-widest">
               {t('app.selectTarget')}
@@ -65,7 +65,7 @@ export default function Home() {
             </span>
           </div>
           
-          <ScrollArea className="flex-1 p-4">
+          <ScrollArea className="flex-1 h-full px-4 py-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-20">
               {GOLD_EQUIPMENTS.map(eq => (
                 <EquipmentCard
@@ -81,7 +81,7 @@ export default function Home() {
       </div>
 
       {/* 右侧面板：精锻分析结果 */}
-      <div className="w-full md:w-1/2 lg:w-7/12 bg-muted/5 relative flex flex-col h-screen">
+      <div className="w-full md:w-1/2 lg:w-7/12 bg-muted/5 relative flex flex-col h-screen max-h-screen">
         {/* 背景装饰网格 */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
         
