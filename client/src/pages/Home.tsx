@@ -59,7 +59,7 @@ export default function Home() {
         
         <div className="flex items-center gap-4">
           <div className="hidden md:block text-xs font-mono text-muted-foreground/60">
-            {t('app.subtitle')} // V1.2.0
+            {t('app.subtitle')}
           </div>
           <Button 
             variant="ghost" 
@@ -81,8 +81,12 @@ export default function Home() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-dashed border-primary/5 rounded-full" />
         </div>
 
-        {/* 左侧：装备选择面板 */}
-        <div className="w-80 md:w-96 border-r border-border bg-card/30 flex flex-col z-10 backdrop-blur-sm">
+        {/* 左侧：装备选择面板 - 移动端全屏，桌面端固定宽度 */}
+        <div className={cn(
+          "border-r border-border bg-card/30 flex flex-col z-10 backdrop-blur-sm transition-all duration-300",
+          "w-full md:w-96 absolute md:relative inset-0 md:inset-auto",
+          selectedTarget ? "hidden md:flex" : "flex"
+        )}>
           <div className="p-4 border-b border-border/50 bg-card/50">
             <div className="flex items-center justify-between mb-2">
               <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
@@ -118,7 +122,7 @@ export default function Home() {
                           key={eq.id}
                           onClick={() => handleSelectTarget(eq)}
                           className={cn(
-                            "px-4 py-2 cursor-pointer border-l-2 transition-all hover:bg-primary/10 flex items-center justify-between group",
+                            "px-4 py-2 cursor-pointer border-l-2 transition-all hover:bg-primary/10 flex items-center justify-between group relative overflow-hidden",
                             selectedTarget?.id === eq.id 
                               ? "border-l-primary bg-primary/5" 
                               : "border-l-transparent hover:border-l-primary/30"
@@ -143,9 +147,16 @@ export default function Home() {
           </div>
         </div>
 
-        {/* 右侧：分析结果面板 */}
+        {/* 右侧：分析结果面板 - 移动端全屏，桌面端自适应 */}
         {selectedTarget ? (
-          <div className="flex-1 flex flex-col min-w-0 bg-background/50 z-10">
+          <div className="flex-1 flex flex-col min-w-0 bg-background/50 z-10 absolute md:relative inset-0 md:inset-auto overflow-y-auto md:overflow-hidden">
+            {/* 移动端返回按钮 */}
+            <div className="md:hidden px-4 py-2 border-b border-border bg-card/50 flex items-center">
+              <Button variant="ghost" size="sm" onClick={() => setSelectedTarget(null)} className="-ml-2">
+                <ArrowRight className="w-4 h-4 mr-2 rotate-180" />
+                {t('app.reset')}
+              </Button>
+            </div>
             {/* 目标装备概览 */}
             <div className="h-24 border-b border-border bg-card/20 flex items-center px-6 shrink-0">
               <div className="flex items-center gap-6 w-full">
