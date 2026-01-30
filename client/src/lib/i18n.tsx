@@ -7,7 +7,7 @@ export const translations = {
     app: {
       title: '装备精锻辅助终端',
       version: 'V1.2.0',
-      subtitle: 'app.subtitle // V1.2.0',
+      subtitle: '终末地工业 · 装备复刻',
       reset: '重置',
       selectTarget: '选择目标装备',
       unitsDetected: '个单位已检测',
@@ -43,7 +43,7 @@ export const translations = {
     app: {
       title: 'FORGE ASSIST TERMINAL',
       version: 'V1.2.0',
-      subtitle: 'app.subtitle // V1.2.0',
+      subtitle: 'ENDGEAR INDUSTRIES · FORGE',
       reset: 'RESET',
       selectTarget: 'SELECT TARGET EQUIPMENT',
       unitsDetected: 'UNITS DETECTED',

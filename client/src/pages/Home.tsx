@@ -218,7 +218,7 @@ export default function Home() {
                                   <EquipmentCard
                                     equipment={mat.equipment}
                                     className={cn(
-                                      "border-l-4 transition-all hover:translate-x-1",
+                                      "border-l-4 transition-all",
                                       mat.matchType === 'Better' 
                                         ? "border-l-green-500 bg-green-500/5 hover:bg-green-500/10" 
                                         : "border-l-yellow-500 bg-yellow-500/5 hover:bg-yellow-500/10"
@@ -260,8 +260,8 @@ export default function Home() {
             </div>
           </div>
         ) : (
-          /* 空状态引导 */
-          <div className="h-full flex flex-col items-center justify-center p-8 text-center relative z-10 w-full">
+          /* 空状态引导 - 移动端隐藏，桌面端显示 */
+          <div className="hidden md:flex h-full flex-col items-center justify-center p-8 text-center relative z-10 w-full">
             <div className="w-32 h-32 mb-8 relative">
               <div className="absolute inset-0 border-2 border-primary/20 rounded-full animate-[spin_10s_linear_infinite]" />
               <div className="absolute inset-4 border border-primary/40 rounded-full animate-[spin_5s_linear_infinite_reverse]" />
