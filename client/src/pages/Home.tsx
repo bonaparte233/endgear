@@ -1,5 +1,11 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Equipment, GOLD_EQUIPMENTS } from '@/lib/data';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { findForgeMaterials, AttributeMatch } from '@/lib/forge-logic';
 import { EquipmentCard } from '@/components/EquipmentCard';
 import { Button } from '@/components/ui/button';
@@ -12,6 +18,18 @@ export default function Home() {
   const [selectedTarget, setSelectedTarget] = useState<Equipment | null>(null);
   const [attributeMatches, setAttributeMatches] = useState<AttributeMatch[]>([]);
   const { language, setLanguage, t } = useLanguage();
+
+  // Group equipments by set
+  const groupedEquipments = useMemo(() => {
+    const groups: Record<string, Equipment[]> = {};
+    GOLD_EQUIPMENTS.forEach((eq) => {
+      if (!groups[eq.set]) {
+        groups[eq.set] = [];
+      }
+      groups[eq.set].push(eq);
+    });
+    return groups;
+  }, []);
 
   const handleTargetSelect = (equipment: Equipment) => {
     setSelectedTarget(equipment);
@@ -65,17 +83,35 @@ export default function Home() {
             </span>
           </div>
           
-          <div className="flex-1 overflow-y-auto px-4 py-4 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-20">
-              {GOLD_EQUIPMENTS.map(eq => (
-                <EquipmentCard
-                  key={eq.id}
-                  equipment={eq}
-                  isSelected={selectedTarget?.id === eq.id}
-                  onClick={() => handleTargetSelect(eq)}
-                />
+          {/* Equipment List */}
+          <div className="flex-1 min-h-0 overflow-y-auto pr-2 pb-10 custom-scrollbar">
+            <Accordion type="multiple" className="w-full space-y-4">
+              {Object.entries(groupedEquipments).map(([setName, equipments]) => (
+                <AccordionItem key={setName} value={setName} className="border-none">
+                  <AccordionTrigger className="bg-secondary/50 px-4 py-3 hover:bg-secondary/80 hover:no-underline transition-colors border-l-2 border-primary/50 data-[state=open]:border-primary">
+                    <span className="text-base font-bold tracking-wider uppercase flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 bg-primary/50 rounded-full" />
+                      {setName}
+                      <span className="text-xs font-normal text-muted-foreground ml-2">
+                        [{equipments.length}]
+                      </span>
+                    </span>
+                  </AccordionTrigger>
+                  <AccordionContent className="pt-2 pb-0">
+                    <div className="space-y-3 pl-2">
+                      {equipments.map((eq) => (
+                        <EquipmentCard
+                          key={eq.id}
+                          equipment={eq}
+                          isSelected={selectedTarget?.id === eq.id}
+                          onClick={() => handleTargetSelect(eq)}
+                        />
+                      ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
               ))}
-            </div>
+            </Accordion>
           </div>
         </div>
       </div>
