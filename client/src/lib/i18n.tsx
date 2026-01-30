@@ -7,7 +7,7 @@ export const translations = {
     app: {
       title: '装备精锻辅助终端',
       version: 'V1.2.0',
-      subtitle: '终末地工业 · 装备复刻',
+      subtitle: '终末地工业 · 装备精锻',
       reset: '重置',
       selectTarget: '选择目标装备',
       unitsDetected: '个单位已检测',
