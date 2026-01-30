@@ -1,4 +1,4 @@
-import { Equipment, ATTRIBUTE_MAP, TYPE_MAP } from "@/lib/data";
+import { Equipment } from "@/types";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/lib/i18n";
 
@@ -28,13 +28,11 @@ export function EquipmentCard({
       className={cn(
         "relative group cursor-pointer transition-all duration-300",
         "bg-card border border-border/40 hover:border-primary/60",
-        // 移除 clip-corners 和 overflow-hidden 以避免遮挡外部装饰
-        // 改为直角设计
         isSelected && "border-primary ring-1 ring-primary/50 bg-primary/5",
         className
       )}
     >
-      {/* 装饰性角标 - 调整位置到边框内部或正好压在边框上 */}
+      {/* 装饰性角标 */}
       <div className="absolute -top-px -left-px w-3 h-3 border-t-2 border-l-2 border-primary/30 group-hover:border-primary transition-colors z-10" />
       <div className="absolute -bottom-px -right-px w-3 h-3 border-b-2 border-r-2 border-primary/30 group-hover:border-primary transition-colors z-10" />
       
@@ -47,7 +45,7 @@ export function EquipmentCard({
               {equipment.name}
             </h3>
             <div className="flex gap-2 mt-1 text-xs text-muted-foreground font-mono uppercase">
-              <span className="bg-muted px-1.5 py-0.5">{t(`equipment.${equipment.type}`)}</span>
+              <span className="bg-muted px-1.5 py-0.5">{t(`types.${equipment.type}`)}</span>
               <span className="border border-border px-1.5 py-0.5">{equipment.set}</span>
             </div>
           </div>
@@ -59,39 +57,21 @@ export function EquipmentCard({
         <div className="space-y-1.5 mt-2">
           {/* 主属性 */}
           <div className="flex justify-between items-center text-sm font-mono border-b border-border/30 pb-1">
-            <span className="text-muted-foreground">{equipment.mainStat.name}</span>
+            <span className="text-muted-foreground">{t(`stats.${equipment.mainStat.type}`)}</span>
             <span className="text-foreground font-bold">{equipment.mainStat.value}</span>
           </div>
 
-          {/* 副属性 1 */}
-          <div className={cn(
-            "flex justify-between items-center text-xs font-mono",
-            comparisonResult?.betterStats.includes(ATTRIBUTE_MAP[equipment.subStat1.name]) && "text-green-500 font-bold",
-            comparisonResult?.equalStats.includes(ATTRIBUTE_MAP[equipment.subStat1.name]) && "text-yellow-500"
-          )}>
-            <span>{ATTRIBUTE_MAP[equipment.subStat1.name]}</span>
-            <span>{equipment.subStat1.value}</span>
-          </div>
-
-          {/* 副属性 2 */}
-          <div className={cn(
-            "flex justify-between items-center text-xs font-mono",
-            comparisonResult?.betterStats.includes(ATTRIBUTE_MAP[equipment.subStat2.name]) && "text-green-500 font-bold",
-            comparisonResult?.equalStats.includes(ATTRIBUTE_MAP[equipment.subStat2.name]) && "text-yellow-500"
-          )}>
-            <span>{ATTRIBUTE_MAP[equipment.subStat2.name]}</span>
-            <span>{equipment.subStat2.value}</span>
-          </div>
-
-          {/* 副属性 3 */}
-          <div className={cn(
-            "flex justify-between items-center text-xs font-mono",
-            comparisonResult?.betterStats.includes(equipment.subStat3.name) && "text-green-500 font-bold",
-            comparisonResult?.equalStats.includes(equipment.subStat3.name) && "text-yellow-500"
-          )}>
-            <span className="truncate max-w-[70%]">{equipment.subStat3.name}</span>
-            <span>{equipment.subStat3.value}</span>
-          </div>
+          {/* 副属性列表 */}
+          {equipment.subStats.map((stat, idx) => (
+            <div key={idx} className={cn(
+              "flex justify-between items-center text-xs font-mono",
+              comparisonResult?.betterStats.includes(stat.type) && "text-green-500 font-bold",
+              comparisonResult?.equalStats.includes(stat.type) && "text-yellow-500"
+            )}>
+              <span className="truncate max-w-[70%]">{t(`stats.${stat.type}`)}</span>
+              <span>{stat.value}</span>
+            </div>
+          ))}
         </div>
       </div>
 

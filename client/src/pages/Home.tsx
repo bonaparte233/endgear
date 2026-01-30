@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
-import { Equipment, GOLD_EQUIPMENTS } from '@/lib/data';
+import { GOLD_EQUIPMENTS } from '@/lib/data';
+import { Equipment } from '@/types';
 import {
   Accordion,
   AccordionContent,
@@ -200,7 +201,7 @@ export default function Home() {
                         <div className="flex items-center gap-3 w-full pr-4">
                           <div className="bg-muted px-3 py-1 rounded-sm border border-border/50 flex items-center group-hover:border-primary/30 transition-colors">
                             <span className="text-sm font-mono text-muted-foreground">{t('app.upgradeTarget')}:</span>
-                            <span className="ml-2 font-bold text-foreground">{match.attributeName}</span>
+                            <span className="ml-2 font-bold text-foreground">{t(`stats.${match.attributeName}`)}</span>
                             <span className="ml-2 text-xs text-muted-foreground">({match.targetValue})</span>
                           </div>
                           <div className="h-px flex-1 bg-border/30 group-hover:bg-primary/20 transition-colors" />

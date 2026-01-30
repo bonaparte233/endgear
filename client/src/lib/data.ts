@@ -1,1723 +1,1134 @@
+import { Equipment } from '../types';
 
-// 装备数据类型定义
-export type Rarity = 'Gold' | 'Purple' | 'Blue' | 'Green' | 'White';
-export type EquipmentType = 'Accessory' | 'Glove' | 'Armor';
-export type AttributeType = 'Agility' | 'Intelligence' | 'Strength' | 'Willpower';
-
-export interface Equipment {
-  id: string;
-  name: string;
-  rarity: Rarity;
-  type: EquipmentType;
-  set: string;
-  mainStat: { name: string; value: number };
-  subStat1: { name: AttributeType | string; value: number };
-  subStat2: { name: AttributeType | string; value: number };
-  subStat3: { name: string; value: string | number };
-  image: string;
-}
-
-// 属性名称映射
-export const ATTRIBUTE_MAP: Record<string, string> = {
-  'Agility': '敏捷',
-  'Intelligence': '智识',
-  'Strength': '力量',
-  'Willpower': '意志'
-};
-
-export const TYPE_MAP: Record<EquipmentType, string> = {
-  'Accessory': '配件',
-  'Glove': '护手',
-  'Armor': '护甲'
-};
-
-// 全量金色装备数据 (70件)
 export const GOLD_EQUIPMENTS: Equipment[] = [
   {
-    "id": "e_1",
-    "name": "长息蓄电核",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "长息",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Strength",
-      "value": 21.0
-    },
-    "subStat2": {
-      "name": "Intelligence",
-      "value": 32.0
-    },
-    "subStat3": {
-      "name": "终结技充能效率",
-      "value": "24.60%"
-    },
-    "image": "/images/equipments/changxi_core.png"
-  },
-  {
-    "id": "e_2",
-    "name": "M.I.警用工具组",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "M.I.警用",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Intelligence",
-      "value": 32.0
-    },
-    "subStat2": {
-      "name": "Agility",
-      "value": 21.0
-    },
-    "subStat3": {
-      "name": "暴击率",
-      "value": "10.40%"
-    },
-    "image": "/images/equipments/mi_tool.png"
-  },
-  {
-    "id": "e_3",
-    "name": "拓荒通信器·壹型",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "拓荒",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Strength",
-      "value": 32.0
-    },
-    "subStat2": {
-      "name": "Intelligence",
-      "value": 21.0
-    },
-    "subStat3": {
-      "name": "寒冷和电磁伤害",
-      "value": "23%"
-    },
-    "image": "/images/equipments/tuohuang_comm.png"
-  },
-  {
-    "id": "e_4",
-    "name": "轻超域分析环",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "轻超域",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Strength",
-      "value": 32.0
-    },
-    "subStat2": {
-      "name": "Willpower",
-      "value": 21.0
-    },
-    "subStat3": {
-      "name": "物理伤害加成",
-      "value": "23.00%"
-    },
-    "image": "/images/equipments/qingchaoyu_ring.png"
-  },
-  {
-    "id": "e_5",
-    "name": "生物辅助重甲",
-    "rarity": "Gold",
-    "type": "Armor",
-    "set": "生物辅助",
-    "mainStat": {
-      "name": "防御力",
-      "value": 56.0
-    },
-    "subStat1": {
-      "name": "Strength",
-      "value": 87.0
-    },
-    "subStat2": {
-      "name": "Willpower",
-      "value": 58.0
-    },
-    "subStat3": {
-      "name": "治疗效率加成",
-      "value": "10.40%"
-    },
-    "image": "/images/equipments/bio_armor.png"
-  },
-  {
-    "id": "e_6",
-    "name": "50式应龙护手·壹型",
-    "rarity": "Gold",
-    "type": "Glove",
-    "set": "50式应龙",
-    "mainStat": {
-      "name": "防御力",
-      "value": 42.0
-    },
-    "subStat1": {
-      "name": "Willpower",
-      "value": 65.0
-    },
-    "subStat2": {
-      "name": "Agility",
-      "value": 43.0
-    },
-    "subStat3": {
-      "name": "连携技伤害加成",
-      "value": "34.50%"
-    },
-    "image": "/images/equipments/yinglong_glove.png"
-  },
-  {
-    "id": "e_7",
-    "name": "动火用储能匣",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "动火用",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Strength",
-      "value": 32.0
-    },
-    "subStat2": {
-      "name": "Agility",
-      "value": 21.0
-    },
-    "subStat3": {
-      "name": "源石技艺强度",
-      "value": 41.0
-    },
-    "image": "/images/equipments/donghuo_box.png"
-  },
-  {
-    "id": "e_8",
-    "name": "纾难印章·壹型",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "武陵",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Willpower",
-      "value": 43.0
-    },
-    "subStat2": {
-      "name": "",
-      "value": 0
-    },
-    "subStat3": {
-      "name": "治疗效率加成",
-      "value": "21.60%"
-    },
-    "image": "/images/equipments/shunan_seal.png"
-  },
-  {
-    "id": "e_9",
-    "name": "碾骨面具",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "碾骨",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Agility",
-      "value": 32.0
-    },
-    "subStat2": {
-      "name": "Strength",
-      "value": 21.0
-    },
-    "subStat3": {
-      "name": "对失衡目标伤害加成",
-      "value": "59.10%"
-    },
-    "image": "/images/equipments/niangu_mask.png"
-  },
-  {
-    "id": "e_10",
-    "name": "潮涌手甲",
-    "rarity": "Gold",
-    "type": "Glove",
-    "set": "潮涌",
-    "mainStat": {
-      "name": "防御力",
-      "value": 42.0
-    },
-    "subStat1": {
-      "name": "Strength",
-      "value": 65.0
-    },
-    "subStat2": {
-      "name": "Willpower",
-      "value": 43.0
-    },
-    "subStat3": {
-      "name": "寒冷和电磁伤害",
-      "value": "19.20%"
-    },
-    "image": "/images/equipments/chaoyong_glove.png"
-  },
-  {
-    "id": "e_11",
-    "name": "M.I.警用罩衣·贰型",
-    "rarity": "Gold",
-    "type": "Armor",
-    "set": "M.I.警用",
-    "mainStat": {
-      "name": "防御力",
-      "value": 56.0
-    },
-    "subStat1": {
-      "name": "Willpower",
-      "value": 87.0
-    },
-    "subStat2": {
-      "name": "Agility",
-      "value": 58.0
-    },
-    "subStat3": {
-      "name": "战技伤害加成",
-      "value": "20.70%"
-    },
-    "image": "/images/equipments/mi_armor.png"
-  },
-  {
-    "id": "e_12",
-    "name": "脉冲式手套",
-    "rarity": "Gold",
-    "type": "Glove",
-    "set": "脉冲式",
-    "mainStat": {
-      "name": "防御力",
-      "value": 42.0
-    },
-    "subStat1": {
-      "name": "Willpower",
-      "value": 65.0
-    },
-    "subStat2": {
-      "name": "Intelligence",
-      "value": 43.0
-    },
-    "subStat3": {
-      "name": "寒冷和电磁伤害",
-      "value": "19.20%"
-    },
-    "image": "/images/equipments/pulse_glove.png"
-  },
-  {
-    "id": "e_13",
-    "name": "生物辅助接驳器",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "生物辅助",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Strength",
-      "value": 32.0
-    },
-    "subStat2": {
-      "name": "Willpower",
-      "value": 21.0
-    },
-    "subStat3": {
-      "name": "全伤害减免",
-      "value": "17.20%"
-    },
-    "image": "/images/equipments/bio_connector.png"
-  },
-  {
-    "id": "e_14",
-    "name": "长息护手·壹型",
-    "rarity": "Gold",
-    "type": "Glove",
-    "set": "长息",
-    "mainStat": {
-      "name": "防御力",
-      "value": 42.0
-    },
-    "subStat1": {
-      "name": "Willpower",
-      "value": 43.0
-    },
-    "subStat2": {
-      "name": "Intelligence",
-      "value": 65.0
-    },
-    "subStat3": {
-      "name": "终结技充能效率",
-      "value": "20.50%"
-    },
-    "image": "/images/equipments/changxi_glove.png"
-  },
-  {
-    "id": "e_15",
-    "name": "M.I.警用瞄具",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "M.I.警用",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Agility",
-      "value": 32.0
-    },
-    "subStat2": {
-      "name": "Strength",
-      "value": 21.0
-    },
-    "subStat3": {
-      "name": "战技伤害加成",
-      "value": "41.40%"
-    },
-    "image": "/images/equipments/mi_sight.png"
-  },
-  {
-    "id": "e_16",
-    "name": "拓荒耐蚀手套",
-    "rarity": "Gold",
-    "type": "Glove",
-    "set": "拓荒",
-    "mainStat": {
-      "name": "防御力",
-      "value": 42.0
-    },
-    "subStat1": {
-      "name": "Agility",
-      "value": 65.0
-    },
-    "subStat2": {
-      "name": "Intelligence",
-      "value": 43.0
-    },
-    "subStat3": {
-      "name": "战技伤害加成",
-      "value": "34.50%"
-    },
-    "image": "/images/equipments/tuohuang_glove.png"
-  },
-  {
-    "id": "e_17",
-    "name": "轻超域护手",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "轻超域",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Agility",
-      "value": 32.0
-    },
-    "subStat2": {
-      "name": "Strength",
-      "value": 21.0
-    },
-    "subStat3": {
-      "name": "源石技艺强度",
-      "value": 34.0
-    },
-    "image": "/images/equipments/qingchaoyu_glove.png"
-  },
-  {
-    "id": "e_18",
-    "name": "点剑火石",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "点剑",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Agility",
-      "value": 32.0
-    },
-    "subStat2": {
-      "name": "Strength",
-      "value": 21.0
-    },
-    "subStat3": {
-      "name": "物理伤害加成",
-      "value": "23.00%"
-    },
-    "image": "/images/equipments/dianjian_stone.png"
-  },
-  {
-    "id": "e_19",
-    "name": "50式应龙护手",
-    "rarity": "Gold",
-    "type": "Glove",
-    "set": "50式应龙",
-    "mainStat": {
-      "name": "防御力",
-      "value": 42.0
-    },
-    "subStat1": {
-      "name": "Agility",
-      "value": 65.0
-    },
-    "subStat2": {
-      "name": "Intelligence",
-      "value": 43.0
-    },
-    "subStat3": {
-      "name": "连携技伤害加成",
-      "value": "34.50%"
-    },
-    "image": "/images/equipments/yinglong_glove.png"
-  },
-  {
-    "id": "e_20",
-    "name": "动火用手甲·壹型",
-    "rarity": "Gold",
-    "type": "Glove",
-    "set": "动火用",
-    "mainStat": {
-      "name": "防御力",
-      "value": 42.0
-    },
-    "subStat1": {
-      "name": "Willpower",
-      "value": 65.0
-    },
-    "subStat2": {
-      "name": "智识",
-      "value": 43.0
-    },
-    "subStat3": {
-      "name": "灼热和自然伤害",
-      "value": "19.20%"
-    },
-    "image": "/images/equipments/donghuo_glove.png"
-  },
-  {
-    "id": "e_21",
-    "name": "纾难印章",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "武陵",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Intelligence",
-      "value": 43.0
-    },
-    "subStat2": {
-      "name": "",
-      "value": 0
-    },
-    "subStat3": {
-      "name": "终结技充能效率",
-      "value": "25.70%"
-    },
-    "image": "/images/equipments/shunan_seal.png"
-  },
-  {
-    "id": "e_22",
-    "name": "碾骨披巾·壹型",
-    "rarity": "Gold",
-    "type": "Armor",
-    "set": "碾骨",
-    "mainStat": {
-      "name": "防御力",
-      "value": 56.0
-    },
-    "subStat1": {
-      "name": "Willpower",
-      "value": 87.0
-    },
-    "subStat2": {
-      "name": "Agility",
-      "value": 58.0
-    },
-    "subStat3": {
-      "name": "终结技充能效率",
-      "value": "12.30%"
-    },
-    "image": "/images/equipments/niangu_armor.png"
-  },
-  {
-    "id": "e_23",
-    "name": "落潮轻甲",
-    "rarity": "Gold",
-    "type": "Armor",
-    "set": "潮涌",
-    "mainStat": {
-      "name": "防御力",
-      "value": 56.0
-    },
-    "subStat1": {
-      "name": "Intelligence",
-      "value": 87.0
-    },
-    "subStat2": {
-      "name": "Strength",
-      "value": 58.0
-    },
-    "subStat3": {
-      "name": "终结技充能效率",
-      "value": "12.30%"
-    },
-    "image": "/images/equipments/chaoyong_armor.png"
-  },
-  {
-    "id": "e_24",
-    "name": "M.I.警用罩衣",
-    "rarity": "Gold",
-    "type": "Armor",
-    "set": "M.I.警用",
-    "mainStat": {
-      "name": "防御力",
-      "value": 56.0
-    },
-    "subStat1": {
-      "name": "Intelligence",
-      "value": 87.0
-    },
-    "subStat2": {
-      "name": "Agility",
-      "value": 58.0
-    },
-    "subStat3": {
-      "name": "普通攻击伤害加成",
-      "value": "13.80%"
-    },
-    "image": "/images/equipments/mi_armor.png"
-  },
-  {
-    "id": "e_25",
-    "name": "脉冲式干扰服",
-    "rarity": "Gold",
-    "type": "Armor",
-    "set": "脉冲式",
-    "mainStat": {
-      "name": "防御力",
-      "value": 56.0
-    },
-    "subStat1": {
-      "name": "Intelligence",
-      "value": 87.0
-    },
-    "subStat2": {
-      "name": "Willpower",
-      "value": 58.0
-    },
-    "subStat3": {
-      "name": "源石技艺强度",
-      "value": 20.0
-    },
-    "image": "/images/equipments/pulse_armor.png"
-  },
-  {
-    "id": "e_26",
-    "name": "生物辅助手甲",
-    "rarity": "Gold",
-    "type": "Glove",
-    "set": "生物辅助",
-    "mainStat": {
-      "name": "防御力",
-      "value": 42.0
-    },
-    "subStat1": {
-      "name": "Willpower",
-      "value": 65.0
-    },
-    "subStat2": {
-      "name": "Strength",
-      "value": 43.0
-    },
-    "subStat3": {
-      "name": "治疗效率加成",
-      "value": "17.30%"
-    },
-    "image": "/images/equipments/bio_glove.png"
-  },
-  {
-    "id": "e_27",
-    "name": "长息护手",
-    "rarity": "Gold",
-    "type": "Glove",
-    "set": "长息",
-    "mainStat": {
-      "name": "防御力",
-      "value": 42.0
-    },
-    "subStat1": {
-      "name": "Strength",
-      "value": 43.0
-    },
-    "subStat2": {
-      "name": "Intelligence",
-      "value": 65.0
-    },
-    "subStat3": {
-      "name": "终结技充能效率",
-      "value": "20.50%"
-    },
-    "image": "/images/equipments/changxi_glove.png"
-  },
-  {
-    "id": "e_28",
-    "name": "M.I.警用臂环",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "M.I.警用",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Strength",
-      "value": 32.0
-    },
-    "subStat2": {
-      "name": "Willpower",
-      "value": 21.0
-    },
-    "subStat3": {
-      "name": "寒冷和电磁伤害",
-      "value": "23%"
-    },
-    "image": "/images/equipments/mi_armband.png"
-  },
-  {
-    "id": "e_29",
-    "name": "拓荒护甲·叁型",
-    "rarity": "Gold",
-    "type": "Armor",
-    "set": "拓荒",
-    "mainStat": {
-      "name": "防御力",
-      "value": 56.0
-    },
-    "subStat1": {
-      "name": "Agility",
-      "value": 87.0
-    },
-    "subStat2": {
-      "name": "Intelligence",
-      "value": 58.0
-    },
-    "subStat3": {
-      "name": "副能力",
-      "value": "10.40%"
-    },
-    "image": "/images/equipments/tuohuang_armor.png"
-  },
-  {
-    "id": "e_30",
-    "name": "轻超域护板",
-    "rarity": "Gold",
-    "type": "Armor",
-    "set": "轻超域",
-    "mainStat": {
-      "name": "防御力",
-      "value": 56.0
-    },
-    "subStat1": {
-      "name": "Strength",
-      "value": 87.0
-    },
-    "subStat2": {
-      "name": "Willpower",
-      "value": 58.0
-    },
-    "subStat3": {
-      "name": "对失衡目标伤害加成",
-      "value": "29.60%"
-    },
-    "image": "/images/equipments/qingchaoyu_armor.png"
-  },
-  {
-    "id": "e_31",
-    "name": "点剑战术手甲",
-    "rarity": "Gold",
-    "type": "Glove",
-    "set": "点剑",
-    "mainStat": {
-      "name": "防御力",
-      "value": 42.0
-    },
-    "subStat1": {
-      "name": "Agility",
-      "value": 65.0
-    },
-    "subStat2": {
-      "name": "Strength",
-      "value": 43.0
-    },
-    "subStat3": {
-      "name": "终结技伤害加成",
-      "value": "43.10%"
-    },
-    "image": "/images/equipments/dianjian_glove.png"
-  },
-  {
-    "id": "e_32",
-    "name": "50式应龙轻甲",
-    "rarity": "Gold",
-    "type": "Armor",
-    "set": "50式应龙",
-    "mainStat": {
-      "name": "防御力",
-      "value": 56.0
-    },
-    "subStat1": {
-      "name": "Willpower",
-      "value": 87.0
-    },
-    "subStat2": {
-      "name": "Strength",
-      "value": 58.0
-    },
-    "subStat3": {
-      "name": "所有技能伤害",
-      "value": "13.80%"
-    },
-    "image": "/images/equipments/yinglong_armor.png"
-  },
-  {
-    "id": "e_33",
-    "name": "动火用手甲",
-    "rarity": "Gold",
-    "type": "Glove",
-    "set": "动火用",
-    "mainStat": {
-      "name": "防御力",
-      "value": 42.0
-    },
-    "subStat1": {
-      "name": "Intelligence",
-      "value": 65.0
-    },
-    "subStat2": {
-      "name": "Strength",
-      "value": 43.0
-    },
-    "subStat3": {
-      "name": "灼热和自然伤害",
-      "value": "19.20%"
-    },
-    "image": "/images/equipments/donghuo_glove.png"
-  },
-  {
-    "id": "e_34",
-    "name": "纾难识别牌·壹型",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "武陵",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Agility",
-      "value": 43.0
-    },
-    "subStat2": {
-      "name": "",
-      "value": 0
-    },
-    "subStat3": {
-      "name": "连携技伤害加成",
-      "value": "43.20%"
-    },
-    "image": "/images/equipments/shunan_tag.png"
-  },
-  {
-    "id": "e_35",
-    "name": "碾骨披巾",
-    "rarity": "Gold",
-    "type": "Armor",
-    "set": "碾骨",
-    "mainStat": {
-      "name": "防御力",
-      "value": 56.0
-    },
-    "subStat1": {
-      "name": "Willpower",
-      "value": 87.0
-    },
-    "subStat2": {
-      "name": "Strength",
-      "value": 58.0
-    },
-    "subStat3": {
-      "name": "连携技伤害加成",
-      "value": "20.70%"
-    },
-    "image": "/images/equipments/niangu_armor.png"
-  },
-  {
-    "id": "e_36",
-    "name": "50式应龙短刃·壹型",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "50式应龙",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Intelligence",
-      "value": 32.0
-    },
-    "subStat2": {
-      "name": "Strength",
-      "value": 21.0
-    },
-    "subStat3": {
-      "name": "所有技能伤害",
-      "value": "27.60%"
-    },
-    "image": "/images/equipments/yinglong_knife.png"
-  },
-  {
-    "id": "e_37",
-    "name": "M.I.警用护甲",
-    "rarity": "Gold",
-    "type": "Armor",
-    "set": "M.I.警用",
-    "mainStat": {
-      "name": "防御力",
-      "value": 56.0
-    },
-    "subStat1": {
-      "name": "Agility",
-      "value": 87.0
-    },
-    "subStat2": {
-      "name": "Strength",
-      "value": 58.0
-    },
-    "subStat3": {
-      "name": "源石技艺强度",
-      "value": 20.0
-    },
-    "image": "/images/equipments/mi_armor.png"
-  },
-  {
-    "id": "e_38",
-    "name": "碾骨小雕像·壹型",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "碾骨",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Willpower",
-      "value": 32.0
-    },
-    "subStat2": {
-      "name": "Intelligence",
-      "value": 21.0
-    },
-    "subStat3": {
-      "name": "连携技伤害加成",
-      "value": "41.40%"
-    },
-    "image": "/images/equipments/niangu_statue.png"
-  },
-  {
-    "id": "e_39",
-    "name": "轻超域稳定盘",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "轻超域",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Agility",
-      "value": 32.0
-    },
-    "subStat2": {
-      "name": "Strength",
-      "value": 21.0
-    },
-    "subStat3": {
-      "name": "源石技艺强度",
-      "value": 41.0
-    },
-    "image": "/images/equipments/qingchaoyu_disk.png"
-  },
-  {
-    "id": "e_40",
-    "name": "长息装甲",
-    "rarity": "Gold",
-    "type": "Armor",
-    "set": "长息",
-    "mainStat": {
-      "name": "防御力",
-      "value": 56.0
-    },
-    "subStat1": {
-      "name": "Willpower",
-      "value": 87.0
-    },
-    "subStat2": {
-      "name": "Intelligence",
-      "value": 58.0
-    },
-    "subStat3": {
-      "name": "源石技艺强度",
-      "value": 20.0
-    },
-    "image": "/images/equipments/changxi_armor.png"
-  },
-  {
-    "id": "e_41",
-    "name": "M.I.警用手环·壹型",
-    "rarity": "Gold",
-    "type": "Glove",
-    "set": "M.I.警用",
-    "mainStat": {
-      "name": "防御力",
-      "value": 42.0
-    },
-    "subStat1": {
-      "name": "Intelligence",
-      "value": 65.0
-    },
-    "subStat2": {
-      "name": "Strength",
-      "value": 43.0
-    },
-    "subStat3": {
-      "name": "暴击率",
-      "value": "8.60%"
-    },
-    "image": "/images/equipments/mi_glove.png"
-  },
-  {
-    "id": "e_42",
-    "name": "拓荒护甲·贰型",
-    "rarity": "Gold",
-    "type": "Armor",
-    "set": "拓荒",
-    "mainStat": {
-      "name": "防御力",
-      "value": 56.0
-    },
-    "subStat1": {
-      "name": "Agility",
-      "value": 87.0
-    },
-    "subStat2": {
-      "name": "Intelligence",
-      "value": 58.0
-    },
-    "subStat3": {
-      "name": "战技伤害加成",
-      "value": "20.70%"
-    },
-    "image": "/images/equipments/tuohuang_armor.png"
-  },
-  {
-    "id": "e_43",
-    "name": "生物辅助护盾针",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "生物辅助",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Willpower",
-      "value": 41.0
-    },
-    "subStat2": {
-      "name": "",
-      "value": 0
-    },
-    "subStat3": {
-      "name": "治疗效率加成",
-      "value": "20.70%"
-    },
-    "image": "/images/equipments/bio_needle.png"
-  },
-  {
-    "id": "e_44",
-    "name": "长息辅助臂",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "长息",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Willpower",
-      "value": 32.0
-    },
-    "subStat2": {
-      "name": "Intelligence",
-      "value": 21.0
-    },
-    "subStat3": {
-      "name": "终结技充能效率",
-      "value": "24.60%"
-    },
-    "image": "/images/equipments/changxi_arm.png"
-  },
-  {
-    "id": "e_45",
-    "name": "点剑战术手套",
-    "rarity": "Gold",
-    "type": "Glove",
-    "set": "点剑",
-    "mainStat": {
-      "name": "防御力",
-      "value": 42.0
-    },
-    "subStat1": {
-      "name": "Strength",
-      "value": 65.0
-    },
-    "subStat2": {
-      "name": "Willpower",
-      "value": 43.0
-    },
-    "subStat3": {
-      "name": "物理伤害加成",
-      "value": "19.20%"
-    },
-    "image": "/images/equipments/dianjian_glove.png"
-  },
-  {
-    "id": "e_46",
-    "name": "50式应龙重甲",
-    "rarity": "Gold",
-    "type": "Armor",
-    "set": "50式应龙",
-    "mainStat": {
-      "name": "防御力",
-      "value": 56.0
-    },
-    "subStat1": {
-      "name": "Strength",
-      "value": 87.0
-    },
-    "subStat2": {
-      "name": "Willpower",
-      "value": 58.0
-    },
-    "subStat3": {
-      "name": "物理伤害加成",
-      "value": "11.50%"
-    },
-    "image": "/images/equipments/yinglong_armor.png"
-  },
-  {
-    "id": "e_47",
-    "name": "动火用外骨骼",
-    "rarity": "Gold",
-    "type": "Armor",
-    "set": "动火用",
-    "mainStat": {
-      "name": "防御力",
-      "value": 56.0
-    },
-    "subStat1": {
-      "name": "Strength",
-      "value": 87.0
-    },
-    "subStat2": {
-      "name": "Agility",
-      "value": 58.0
-    },
-    "subStat3": {
-      "name": "灼热和自然伤害",
-      "value": "11.50%"
-    },
-    "image": "/images/equipments/donghuo_armor.png"
-  },
-  {
-    "id": "e_48",
-    "name": "纾难识别牌",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "武陵",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Strength",
-      "value": 43.0
-    },
-    "subStat2": {
-      "name": "",
-      "value": 0
-    },
-    "subStat3": {
-      "name": "全伤害减免",
-      "value": "17.80%"
-    },
-    "image": "/images/equipments/shunan_tag.png"
-  },
-  {
-    "id": "e_49",
-    "name": "碾骨重护甲·壹型",
-    "rarity": "Gold",
-    "type": "Armor",
-    "set": "碾骨",
-    "mainStat": {
-      "name": "防御力",
-      "value": 56.0
-    },
-    "subStat1": {
-      "name": "Agility",
-      "value": 87.0
-    },
-    "subStat2": {
-      "name": "Strength",
-      "value": 58.0
-    },
-    "subStat3": {
-      "name": "连携技伤害加成",
-      "value": "20.70%"
-    },
-    "image": "/images/equipments/niangu_armor.png"
-  },
-  {
-    "id": "e_50",
-    "name": "生物辅助臂甲",
-    "rarity": "Gold",
-    "type": "Glove",
-    "set": "生物辅助",
-    "mainStat": {
-      "name": "防御力",
-      "value": 42.0
-    },
-    "subStat1": {
-      "name": "Strength",
-      "value": 65.0
-    },
-    "subStat2": {
-      "name": "Willpower",
-      "value": 43.0
-    },
-    "subStat3": {
-      "name": "终结技充能效率",
-      "value": "20.50%"
-    },
-    "image": "/images/equipments/bio_arm.png"
-  },
-  {
-    "id": "e_51",
-    "name": "50式应龙短刃",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "50式应龙",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Willpower",
-      "value": 32.0
-    },
-    "subStat2": {
-      "name": "Agility",
-      "value": 21.0
-    },
-    "subStat3": {
-      "name": "连携技伤害加成",
-      "value": "41.40%"
-    },
-    "image": "/images/equipments/yinglong_knife.png"
-  },
-  {
-    "id": "e_52",
-    "name": "动火用电力匣",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "动火用",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Willpower",
-      "value": 32.0
-    },
-    "subStat2": {
-      "name": "Intelligence",
-      "value": 21.0
-    },
-    "subStat3": {
-      "name": "源石技艺强度",
-      "value": 41.0
-    },
-    "image": "/images/equipments/donghuo_power.png"
-  },
-  {
-    "id": "e_53",
-    "name": "碾骨小雕像",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "碾骨",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Willpower",
-      "value": 32.0
-    },
-    "subStat2": {
-      "name": "Agility",
-      "value": 21.0
-    },
-    "subStat3": {
-      "name": "战技伤害加成",
-      "value": "41.40%"
-    },
-    "image": "/images/equipments/niangu_statue.png"
-  },
-  {
-    "id": "e_54",
-    "name": "浊流切割炬",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "潮涌",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Strength",
-      "value": 21.0
-    },
-    "subStat2": {
-      "name": "Intelligence",
-      "value": 32.0
-    },
-    "subStat3": {
-      "name": "普通攻击伤害加成",
-      "value": "27.60%"
-    },
-    "image": "/images/equipments/chaoyong_cutter.png"
-  },
-  {
-    "id": "e_55",
-    "name": "M.I.警用手环",
-    "rarity": "Gold",
-    "type": "Glove",
-    "set": "M.I.警用",
-    "mainStat": {
-      "name": "防御力",
-      "value": 42.0
-    },
-    "subStat1": {
-      "name": "Intelligence",
-      "value": 65.0
-    },
-    "subStat2": {
-      "name": "Agility",
-      "value": 43.0
-    },
-    "subStat3": {
-      "name": "普通攻击伤害加成",
-      "value": "23%"
-    },
-    "image": "/images/equipments/mi_glove.png"
-  },
-  {
-    "id": "e_56",
-    "name": "拓荒护甲",
-    "rarity": "Gold",
-    "type": "Armor",
-    "set": "拓荒",
-    "mainStat": {
-      "name": "防御力",
-      "value": 56.0
-    },
-    "subStat1": {
-      "name": "Strength",
-      "value": 87.0
-    },
-    "subStat2": {
-      "name": "Intelligence",
-      "value": 58.0
-    },
-    "subStat3": {
-      "name": "终结技伤害加成",
-      "value": "25.90%"
-    },
-    "image": "/images/equipments/tuohuang_armor.png"
-  },
-  {
-    "id": "e_57",
-    "name": "生物辅助护板",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "生物辅助",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Willpower",
-      "value": 32.0
-    },
-    "subStat2": {
-      "name": "Intelligence",
-      "value": 21.0
-    },
-    "subStat3": {
-      "name": "主能力",
-      "value": "20.70%"
-    },
-    "image": "/images/equipments/bio_plate.png"
-  },
-  {
-    "id": "e_58",
-    "name": "长息蓄电核·壹型",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "长息",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Willpower",
-      "value": 21.0
-    },
-    "subStat2": {
-      "name": "Intelligence",
-      "value": 32.0
-    },
-    "subStat3": {
-      "name": "治疗效率加成",
-      "value": "20.70%"
-    },
-    "image": "/images/equipments/changxi_core.png"
-  },
-  {
-    "id": "e_59",
-    "name": "点剑重装甲",
-    "rarity": "Gold",
-    "type": "Armor",
-    "set": "点剑",
-    "mainStat": {
-      "name": "防御力",
-      "value": 56.0
-    },
-    "subStat1": {
-      "name": "Agility",
-      "value": 87.0
-    },
-    "subStat2": {
-      "name": "Strength",
-      "value": 58.0
-    },
-    "subStat3": {
-      "name": "源石技艺强度",
-      "value": 20.0
-    },
-    "image": "/images/equipments/dianjian_armor.png"
-  },
-  {
-    "id": "e_60",
-    "name": "M.I.警用刺刃·壹型",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "M.I.警用",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Willpower",
-      "value": 32.0
-    },
-    "subStat2": {
-      "name": "Agility",
-      "value": 21.0
-    },
-    "subStat3": {
-      "name": "战技伤害加成",
-      "value": "41.40%"
-    },
-    "image": "/images/equipments/mi_blade.png"
-  },
-  {
-    "id": "e_61",
-    "name": "拓荒增量供氧栓",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "拓荒",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Agility",
-      "value": 32.0
-    },
-    "subStat2": {
-      "name": "Intelligence",
-      "value": 21.0
-    },
-    "subStat3": {
-      "name": "副能力",
-      "value": "20.70%"
-    },
-    "image": "/images/equipments/tuohuang_oxygen.png"
-  },
-  {
-    "id": "e_62",
-    "name": "碾骨重护甲",
-    "rarity": "Gold",
-    "type": "Armor",
-    "set": "碾骨",
-    "mainStat": {
-      "name": "防御力",
-      "value": 56.0
-    },
-    "subStat1": {
-      "name": "Agility",
-      "value": 87.0
-    },
-    "subStat2": {
-      "name": "Intelligence",
-      "value": 58.0
-    },
-    "subStat3": {
-      "name": "终结技充能效率",
-      "value": "12.30%"
-    },
-    "image": "/images/equipments/niangu_armor.png"
-  },
-  {
-    "id": "e_63",
-    "name": "生物辅助胸甲",
-    "rarity": "Gold",
-    "type": "Armor",
-    "set": "生物辅助",
-    "mainStat": {
-      "name": "防御力",
-      "value": 56.0
-    },
-    "subStat1": {
-      "name": "Willpower",
-      "value": 87.0
-    },
-    "subStat2": {
-      "name": "Intelligence",
-      "value": 58.0
-    },
-    "subStat3": {
-      "name": "治疗效率加成",
-      "value": "10.40%"
-    },
-    "image": "/images/equipments/bio_armor.png"
-  },
-  {
-    "id": "e_64",
-    "name": "50式应龙雷达",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "50式应龙",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Strength",
-      "value": 32.0
-    },
-    "subStat2": {
-      "name": "Willpower",
-      "value": 21.0
-    },
-    "subStat3": {
-      "name": "物理伤害加成",
-      "value": "23%"
-    },
-    "image": "/images/equipments/yinglong_radar.png"
-  },
-  {
-    "id": "e_65",
-    "name": "动火用测温镜",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "动火用",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Intelligence",
-      "value": 41.0
-    },
-    "subStat2": {
-      "name": "",
-      "value": 0
-    },
-    "subStat3": {
-      "name": "战技伤害加成",
-      "value": "41.40%"
-    },
-    "image": "/images/equipments/donghuo_scope.png"
-  },
-  {
-    "id": "e_66",
-    "name": "碾骨面具·壹型",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "碾骨",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Agility",
-      "value": 32.0
-    },
-    "subStat2": {
-      "name": "Strength",
-      "value": 21.0
-    },
-    "subStat3": {
-      "name": "暴击率",
-      "value": "10.40%"
-    },
-    "image": "/images/equipments/niangu_mask.png"
-  },
-  {
-    "id": "e_67",
-    "name": "悬河供氧栓",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "潮涌",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Strength",
-      "value": 32.0
-    },
-    "subStat2": {
-      "name": "Willpower",
-      "value": 21.0
-    },
-    "subStat3": {
-      "name": "寒冷和电磁伤害",
-      "value": "23%"
-    },
-    "image": "/images/equipments/chaoyong_oxygen.png"
-  },
-  {
-    "id": "e_68",
-    "name": "M.I.警用手套",
-    "rarity": "Gold",
-    "type": "Glove",
-    "set": "M.I.警用",
-    "mainStat": {
-      "name": "防御力",
-      "value": 42.0
-    },
-    "subStat1": {
-      "name": "Agility",
-      "value": 65.0
-    },
-    "subStat2": {
-      "name": "Strength",
-      "value": 43.0
-    },
-    "subStat3": {
-      "name": "战技伤害加成",
-      "value": "34.50%"
-    },
-    "image": "/images/equipments/mi_glove.png"
-  },
-  {
-    "id": "e_69",
-    "name": "脉冲式校准器",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "脉冲式",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Intelligence",
-      "value": 41.0
-    },
-    "subStat2": {
-      "name": "",
-      "value": 0
-    },
-    "subStat3": {
-      "name": "源石技艺强度",
-      "value": 41.0
-    },
-    "image": "/images/equipments/pulse_calibrator.png"
-  },
-  {
-    "id": "e_70",
-    "name": "生物辅助接驳器·壹型",
-    "rarity": "Gold",
-    "type": "Accessory",
-    "set": "生物辅助",
-    "mainStat": {
-      "name": "防御力",
-      "value": 21.0
-    },
-    "subStat1": {
-      "name": "Strength",
-      "value": 32.0
-    },
-    "subStat2": {
-      "name": "Willpower",
-      "value": 21.0
-    },
-    "subStat3": {
-      "name": "生命值",
-      "value": "41.40%"
-    },
-    "image": "/images/equipments/bio_connector.png"
-  }
+    id: '长息蓄电核',
+    name: '长息蓄电核',
+    type: 'Accessory',
+    set: '长息',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Strength', value: 21.0 },
+      { type: 'Intellect', value: 32.0 },
+      { type: 'UltRecharge', value: 24.6 }
+    ]
+  },
+  {
+    id: 'M.I.警用工具组',
+    name: 'M.I.警用工具组',
+    type: 'Accessory',
+    set: 'M.I.警用',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Intellect', value: 32.0 },
+      { type: 'Agility', value: 21.0 },
+      { type: 'CritRate', value: 10.4 }
+    ]
+  },
+  {
+    id: '拓荒通信器·壹型',
+    name: '拓荒通信器·壹型',
+    type: 'Accessory',
+    set: '拓荒',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Strength', value: 32.0 },
+      { type: 'Intellect', value: 21.0 },
+      { type: 'IceElecDmg', value: 23.0 }
+    ]
+  },
+  {
+    id: '轻超域分析环',
+    name: '轻超域分析环',
+    type: 'Accessory',
+    set: '轻超域',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Strength', value: 32.0 },
+      { type: 'Willpower', value: 21.0 },
+      { type: 'PhysDmg', value: 23.0 }
+    ]
+  },
+  {
+    id: '生物辅助重甲',
+    name: '生物辅助重甲',
+    type: 'Armor',
+    set: '生物辅助',
+    mainStat: { type: 'Defense', value: 56.0 },
+    subStats: [
+      { type: 'Strength', value: 87.0 },
+      { type: 'Willpower', value: 58.0 },
+      { type: 'HealEffect', value: 10.4 }
+    ]
+  },
+  {
+    id: '50式应龙护手·壹型',
+    name: '50式应龙护手·壹型',
+    type: 'Glove',
+    set: '50式应龙',
+    mainStat: { type: 'Defense', value: 42.0 },
+    subStats: [
+      { type: 'Willpower', value: 65.0 },
+      { type: 'Agility', value: 43.0 },
+      { type: 'ComboDmg', value: 34.5 }
+    ]
+  },
+  {
+    id: '动火用储能匣',
+    name: '动火用储能匣',
+    type: 'Accessory',
+    set: '动火用',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Strength', value: 32.0 },
+      { type: 'Agility', value: 21.0 },
+      { type: 'ArtsPower', value: 41.0 }
+    ]
+  },
+  {
+    id: '纾难印章·壹型',
+    name: '纾难印章·壹型',
+    type: 'Accessory',
+    set: '武陵',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Willpower', value: 43.0 },
+      { type: 'HealEffect', value: 21.6 }
+    ]
+  },
+  {
+    id: '碾骨面具',
+    name: '碾骨面具',
+    type: 'Accessory',
+    set: '碾骨',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Agility', value: 32.0 },
+      { type: 'Strength', value: 21.0 },
+      { type: 'BreakDmg', value: 59.1 }
+    ]
+  },
+  {
+    id: '潮涌手甲',
+    name: '潮涌手甲',
+    type: 'Glove',
+    set: '潮涌',
+    mainStat: { type: 'Defense', value: 42.0 },
+    subStats: [
+      { type: 'Strength', value: 65.0 },
+      { type: 'Willpower', value: 43.0 },
+      { type: 'IceElecDmg', value: 19.2 }
+    ]
+  },
+  {
+    id: 'M.I.警用罩衣·贰型',
+    name: 'M.I.警用罩衣·贰型',
+    type: 'Armor',
+    set: 'M.I.警用',
+    mainStat: { type: 'Defense', value: 56.0 },
+    subStats: [
+      { type: 'Willpower', value: 87.0 },
+      { type: 'Agility', value: 58.0 },
+      { type: 'SkillDmg', value: 20.7 }
+    ]
+  },
+  {
+    id: '脉冲式手套',
+    name: '脉冲式手套',
+    type: 'Glove',
+    set: '脉冲式',
+    mainStat: { type: 'Defense', value: 42.0 },
+    subStats: [
+      { type: 'Willpower', value: 65.0 },
+      { type: 'Intellect', value: 43.0 },
+      { type: 'IceElecDmg', value: 19.2 }
+    ]
+  },
+  {
+    id: '生物辅助接驳器',
+    name: '生物辅助接驳器',
+    type: 'Accessory',
+    set: '生物辅助',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Strength', value: 32.0 },
+      { type: 'Willpower', value: 21.0 },
+      { type: 'DmgReduc', value: 17.2 }
+    ]
+  },
+  {
+    id: '长息护手·壹型',
+    name: '长息护手·壹型',
+    type: 'Glove',
+    set: '长息',
+    mainStat: { type: 'Defense', value: 42.0 },
+    subStats: [
+      { type: 'Willpower', value: 43.0 },
+      { type: 'Intellect', value: 65.0 },
+      { type: 'UltRecharge', value: 20.5 }
+    ]
+  },
+  {
+    id: 'M.I.警用瞄具',
+    name: 'M.I.警用瞄具',
+    type: 'Accessory',
+    set: 'M.I.警用',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Agility', value: 32.0 },
+      { type: 'Strength', value: 21.0 },
+      { type: 'SkillDmg', value: 41.4 }
+    ]
+  },
+  {
+    id: '拓荒耐蚀手套',
+    name: '拓荒耐蚀手套',
+    type: 'Glove',
+    set: '拓荒',
+    mainStat: { type: 'Defense', value: 42.0 },
+    subStats: [
+      { type: 'Agility', value: 65.0 },
+      { type: 'Intellect', value: 43.0 },
+      { type: 'SkillDmg', value: 34.5 }
+    ]
+  },
+  {
+    id: '轻超域护手',
+    name: '轻超域护手',
+    type: 'Accessory',
+    set: '轻超域',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Agility', value: 32.0 },
+      { type: 'Strength', value: 21.0 },
+      { type: 'ArtsPower', value: 34.0 }
+    ]
+  },
+  {
+    id: '点剑火石',
+    name: '点剑火石',
+    type: 'Accessory',
+    set: '点剑',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Agility', value: 32.0 },
+      { type: 'Strength', value: 21.0 },
+      { type: 'PhysDmg', value: 23.0 }
+    ]
+  },
+  {
+    id: '50式应龙护手',
+    name: '50式应龙护手',
+    type: 'Glove',
+    set: '50式应龙',
+    mainStat: { type: 'Defense', value: 42.0 },
+    subStats: [
+      { type: 'Agility', value: 65.0 },
+      { type: 'Intellect', value: 43.0 },
+      { type: 'ComboDmg', value: 34.5 }
+    ]
+  },
+  {
+    id: '动火用手甲·壹型',
+    name: '动火用手甲·壹型',
+    type: 'Glove',
+    set: '动火用',
+    mainStat: { type: 'Defense', value: 42.0 },
+    subStats: [
+      { type: 'Willpower', value: 65.0 },
+      { type: 'Intellect', value: 43.0 },
+      { type: 'FireNatDmg', value: 19.2 }
+    ]
+  },
+  {
+    id: '纾难印章',
+    name: '纾难印章',
+    type: 'Accessory',
+    set: '武陵',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Intellect', value: 43.0 },
+      { type: 'UltRecharge', value: 25.7 }
+    ]
+  },
+  {
+    id: '碾骨披巾·壹型',
+    name: '碾骨披巾·壹型',
+    type: 'Armor',
+    set: '碾骨',
+    mainStat: { type: 'Defense', value: 56.0 },
+    subStats: [
+      { type: 'Willpower', value: 87.0 },
+      { type: 'Agility', value: 58.0 },
+      { type: 'UltRecharge', value: 12.3 }
+    ]
+  },
+  {
+    id: '落潮轻甲',
+    name: '落潮轻甲',
+    type: 'Armor',
+    set: '潮涌',
+    mainStat: { type: 'Defense', value: 56.0 },
+    subStats: [
+      { type: 'Intellect', value: 87.0 },
+      { type: 'Strength', value: 58.0 },
+      { type: 'UltRecharge', value: 12.3 }
+    ]
+  },
+  {
+    id: 'M.I.警用罩衣',
+    name: 'M.I.警用罩衣',
+    type: 'Armor',
+    set: 'M.I.警用',
+    mainStat: { type: 'Defense', value: 56.0 },
+    subStats: [
+      { type: 'Intellect', value: 87.0 },
+      { type: 'Agility', value: 58.0 },
+      { type: 'NormalDmg', value: 13.8 }
+    ]
+  },
+  {
+    id: '脉冲式干扰服',
+    name: '脉冲式干扰服',
+    type: 'Armor',
+    set: '脉冲式',
+    mainStat: { type: 'Defense', value: 56.0 },
+    subStats: [
+      { type: 'Intellect', value: 87.0 },
+      { type: 'Willpower', value: 58.0 },
+      { type: 'ArtsPower', value: 20.0 }
+    ]
+  },
+  {
+    id: '生物辅助手甲',
+    name: '生物辅助手甲',
+    type: 'Glove',
+    set: '生物辅助',
+    mainStat: { type: 'Defense', value: 42.0 },
+    subStats: [
+      { type: 'Willpower', value: 65.0 },
+      { type: 'Strength', value: 43.0 },
+      { type: 'HealEffect', value: 17.3 }
+    ]
+  },
+  {
+    id: '长息护手',
+    name: '长息护手',
+    type: 'Glove',
+    set: '长息',
+    mainStat: { type: 'Defense', value: 42.0 },
+    subStats: [
+      { type: 'Strength', value: 43.0 },
+      { type: 'Intellect', value: 65.0 },
+      { type: 'UltRecharge', value: 20.5 }
+    ]
+  },
+  {
+    id: 'M.I.警用臂环',
+    name: 'M.I.警用臂环',
+    type: 'Accessory',
+    set: 'M.I.警用',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Strength', value: 32.0 },
+      { type: 'Willpower', value: 21.0 },
+      { type: 'IceElecDmg', value: 23.0 }
+    ]
+  },
+  {
+    id: '拓荒护甲·叁型',
+    name: '拓荒护甲·叁型',
+    type: 'Armor',
+    set: '拓荒',
+    mainStat: { type: 'Defense', value: 56.0 },
+    subStats: [
+      { type: 'Agility', value: 87.0 },
+      { type: 'Intellect', value: 58.0 },
+      { type: 'SubStat', value: 10.4 }
+    ]
+  },
+  {
+    id: '轻超域护板',
+    name: '轻超域护板',
+    type: 'Armor',
+    set: '轻超域',
+    mainStat: { type: 'Defense', value: 56.0 },
+    subStats: [
+      { type: 'Strength', value: 87.0 },
+      { type: 'Willpower', value: 58.0 },
+      { type: 'BreakDmg', value: 29.6 }
+    ]
+  },
+  {
+    id: '点剑战术手甲',
+    name: '点剑战术手甲',
+    type: 'Glove',
+    set: '点剑',
+    mainStat: { type: 'Defense', value: 42.0 },
+    subStats: [
+      { type: 'Agility', value: 65.0 },
+      { type: 'Strength', value: 43.0 },
+      { type: 'UltDmg', value: 43.1 }
+    ]
+  },
+  {
+    id: '50式应龙轻甲',
+    name: '50式应龙轻甲',
+    type: 'Armor',
+    set: '50式应龙',
+    mainStat: { type: 'Defense', value: 56.0 },
+    subStats: [
+      { type: 'Willpower', value: 87.0 },
+      { type: 'Strength', value: 58.0 },
+      { type: 'AllSkillDmg', value: 13.8 }
+    ]
+  },
+  {
+    id: '动火用手甲',
+    name: '动火用手甲',
+    type: 'Glove',
+    set: '动火用',
+    mainStat: { type: 'Defense', value: 42.0 },
+    subStats: [
+      { type: 'Intellect', value: 65.0 },
+      { type: 'Strength', value: 43.0 },
+      { type: 'FireNatDmg', value: 19.2 }
+    ]
+  },
+  {
+    id: '纾难识别牌·壹型',
+    name: '纾难识别牌·壹型',
+    type: 'Accessory',
+    set: '武陵',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Agility', value: 43.0 },
+      { type: 'ComboDmg', value: 43.2 }
+    ]
+  },
+  {
+    id: '碾骨披巾',
+    name: '碾骨披巾',
+    type: 'Armor',
+    set: '碾骨',
+    mainStat: { type: 'Defense', value: 56.0 },
+    subStats: [
+      { type: 'Willpower', value: 87.0 },
+      { type: 'Strength', value: 58.0 },
+      { type: 'ComboDmg', value: 20.7 }
+    ]
+  },
+  {
+    id: '50式应龙短刃·壹型',
+    name: '50式应龙短刃·壹型',
+    type: 'Accessory',
+    set: '50式应龙',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Intellect', value: 32.0 },
+      { type: 'Strength', value: 21.0 },
+      { type: 'AllSkillDmg', value: 27.6 }
+    ]
+  },
+  {
+    id: 'M.I.警用护甲',
+    name: 'M.I.警用护甲',
+    type: 'Armor',
+    set: 'M.I.警用',
+    mainStat: { type: 'Defense', value: 56.0 },
+    subStats: [
+      { type: 'Agility', value: 87.0 },
+      { type: 'Strength', value: 58.0 },
+      { type: 'ArtsPower', value: 20.0 }
+    ]
+  },
+  {
+    id: '碾骨小雕像·壹型',
+    name: '碾骨小雕像·壹型',
+    type: 'Accessory',
+    set: '碾骨',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Willpower', value: 32.0 },
+      { type: 'Intellect', value: 21.0 },
+      { type: 'ComboDmg', value: 41.4 }
+    ]
+  },
+  {
+    id: '轻超域稳定盘',
+    name: '轻超域稳定盘',
+    type: 'Accessory',
+    set: '轻超域',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Agility', value: 32.0 },
+      { type: 'Strength', value: 21.0 },
+      { type: 'ArtsPower', value: 41.0 }
+    ]
+  },
+  {
+    id: '长息装甲',
+    name: '长息装甲',
+    type: 'Armor',
+    set: '长息',
+    mainStat: { type: 'Defense', value: 56.0 },
+    subStats: [
+      { type: 'Willpower', value: 87.0 },
+      { type: 'Intellect', value: 58.0 },
+      { type: 'ArtsPower', value: 20.0 }
+    ]
+  },
+  {
+    id: 'M.I.警用手环·壹型',
+    name: 'M.I.警用手环·壹型',
+    type: 'Glove',
+    set: 'M.I.警用',
+    mainStat: { type: 'Defense', value: 42.0 },
+    subStats: [
+      { type: 'Intellect', value: 65.0 },
+      { type: 'Strength', value: 43.0 },
+      { type: 'CritRate', value: 8.6 }
+    ]
+  },
+  {
+    id: '拓荒护甲·贰型',
+    name: '拓荒护甲·贰型',
+    type: 'Armor',
+    set: '拓荒',
+    mainStat: { type: 'Defense', value: 56.0 },
+    subStats: [
+      { type: 'Agility', value: 87.0 },
+      { type: 'Intellect', value: 58.0 },
+      { type: 'SkillDmg', value: 20.7 }
+    ]
+  },
+  {
+    id: '生物辅助护盾针',
+    name: '生物辅助护盾针',
+    type: 'Accessory',
+    set: '生物辅助',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Willpower', value: 41.0 },
+      { type: 'HealEffect', value: 20.7 }
+    ]
+  },
+  {
+    id: '长息辅助臂',
+    name: '长息辅助臂',
+    type: 'Accessory',
+    set: '长息',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Willpower', value: 32.0 },
+      { type: 'Intellect', value: 21.0 },
+      { type: 'UltRecharge', value: 24.6 }
+    ]
+  },
+  {
+    id: '点剑战术手套点剑',
+    name: '点剑战术手套点剑',
+    type: 'Glove',
+    set: '点剑',
+    mainStat: { type: 'Defense', value: 42.0 },
+    subStats: [
+      { type: 'Strength', value: 65.0 },
+      { type: 'Willpower', value: 43.0 },
+      { type: 'PhysDmg', value: 19.2 }
+    ]
+  },
+  {
+    id: '50式应龙重甲',
+    name: '50式应龙重甲',
+    type: 'Armor',
+    set: '50式应龙',
+    mainStat: { type: 'Defense', value: 56.0 },
+    subStats: [
+      { type: 'Strength', value: 87.0 },
+      { type: 'Willpower', value: 58.0 },
+      { type: 'PhysDmg', value: 11.5 }
+    ]
+  },
+  {
+    id: '动火用外骨骼',
+    name: '动火用外骨骼',
+    type: 'Armor',
+    set: '动火用',
+    mainStat: { type: 'Defense', value: 56.0 },
+    subStats: [
+      { type: 'Strength', value: 87.0 },
+      { type: 'Agility', value: 58.0 },
+      { type: 'FireNatDmg', value: 11.5 }
+    ]
+  },
+  {
+    id: '纾难识别牌',
+    name: '纾难识别牌',
+    type: 'Accessory',
+    set: '武陵',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Strength', value: 43.0 },
+      { type: 'DmgReduc', value: 17.8 }
+    ]
+  },
+  {
+    id: '碾骨重护甲·壹型',
+    name: '碾骨重护甲·壹型',
+    type: 'Armor',
+    set: '碾骨',
+    mainStat: { type: 'Defense', value: 56.0 },
+    subStats: [
+      { type: 'Agility', value: 87.0 },
+      { type: 'Strength', value: 58.0 },
+      { type: 'ComboDmg', value: 20.7 }
+    ]
+  },
+  {
+    id: '生物辅助臂甲',
+    name: '生物辅助臂甲',
+    type: 'Glove',
+    set: '生物辅助',
+    mainStat: { type: 'Defense', value: 42.0 },
+    subStats: [
+      { type: 'Strength', value: 65.0 },
+      { type: 'Willpower', value: 43.0 },
+      { type: 'UltRecharge', value: 20.5 }
+    ]
+  },
+  {
+    id: '50式应龙短刃',
+    name: '50式应龙短刃',
+    type: 'Accessory',
+    set: '50式应龙',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Willpower', value: 32.0 },
+      { type: 'Agility', value: 21.0 },
+      { type: 'ComboDmg', value: 41.4 }
+    ]
+  },
+  {
+    id: '动火用电力匣',
+    name: '动火用电力匣',
+    type: 'Accessory',
+    set: '动火用',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Willpower', value: 32.0 },
+      { type: 'Intellect', value: 21.0 },
+      { type: 'ArtsPower', value: 41.0 }
+    ]
+  },
+  {
+    id: '碾骨小雕像',
+    name: '碾骨小雕像',
+    type: 'Accessory',
+    set: '碾骨',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Willpower', value: 32.0 },
+      { type: 'Agility', value: 21.0 },
+      { type: 'SkillDmg', value: 41.4 }
+    ]
+  },
+  {
+    id: '浊流切割炬',
+    name: '浊流切割炬',
+    type: 'Accessory',
+    set: '潮涌',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Strength', value: 21.0 },
+      { type: 'Intellect', value: 32.0 },
+      { type: 'NormalDmg', value: 27.6 }
+    ]
+  },
+  {
+    id: 'M.I.警用手环',
+    name: 'M.I.警用手环',
+    type: 'Glove',
+    set: 'M.I.警用',
+    mainStat: { type: 'Defense', value: 42.0 },
+    subStats: [
+      { type: 'Intellect', value: 65.0 },
+      { type: 'Agility', value: 43.0 },
+      { type: 'NormalDmg', value: 23.0 }
+    ]
+  },
+  {
+    id: '拓荒护甲',
+    name: '拓荒护甲',
+    type: 'Armor',
+    set: '拓荒',
+    mainStat: { type: 'Defense', value: 56.0 },
+    subStats: [
+      { type: 'Strength', value: 87.0 },
+      { type: 'Intellect', value: 58.0 },
+      { type: 'UltDmg', value: 25.9 }
+    ]
+  },
+  {
+    id: '生物辅助护板',
+    name: '生物辅助护板',
+    type: 'Accessory',
+    set: '生物辅助',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Willpower', value: 32.0 },
+      { type: 'Intellect', value: 21.0 },
+      { type: 'MainStat', value: 20.7 }
+    ]
+  },
+  {
+    id: '长息蓄电核·壹型',
+    name: '长息蓄电核·壹型',
+    type: 'Accessory',
+    set: '长息',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Willpower', value: 21.0 },
+      { type: 'Intellect', value: 32.0 },
+      { type: 'HealEffect', value: 20.7 }
+    ]
+  },
+  {
+    id: '点剑重装甲点剑',
+    name: '点剑重装甲点剑',
+    type: 'Armor',
+    set: '点剑',
+    mainStat: { type: 'Defense', value: 56.0 },
+    subStats: [
+      { type: 'Agility', value: 87.0 },
+      { type: 'Strength', value: 58.0 },
+      { type: 'ArtsPower', value: 20.0 }
+    ]
+  },
+  {
+    id: 'M.I.警用刺刃·壹型',
+    name: 'M.I.警用刺刃·壹型',
+    type: 'Accessory',
+    set: 'M.I.警用',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Willpower', value: 32.0 },
+      { type: 'Agility', value: 21.0 },
+      { type: 'SkillDmg', value: 41.4 }
+    ]
+  },
+  {
+    id: '拓荒增量供氧栓',
+    name: '拓荒增量供氧栓',
+    type: 'Accessory',
+    set: '拓荒',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Agility', value: 32.0 },
+      { type: 'Intellect', value: 21.0 },
+      { type: 'SubStat', value: 20.7 }
+    ]
+  },
+  {
+    id: '碾骨重护甲',
+    name: '碾骨重护甲',
+    type: 'Armor',
+    set: '碾骨',
+    mainStat: { type: 'Defense', value: 56.0 },
+    subStats: [
+      { type: 'Agility', value: 87.0 },
+      { type: 'Intellect', value: 58.0 },
+      { type: 'UltRecharge', value: 12.3 }
+    ]
+  },
+  {
+    id: '生物辅助胸甲',
+    name: '生物辅助胸甲',
+    type: 'Armor',
+    set: '生物辅助',
+    mainStat: { type: 'Defense', value: 56.0 },
+    subStats: [
+      { type: 'Willpower', value: 87.0 },
+      { type: 'Intellect', value: 58.0 },
+      { type: 'HealEffect', value: 10.4 }
+    ]
+  },
+  {
+    id: '50式应龙雷达',
+    name: '50式应龙雷达',
+    type: 'Accessory',
+    set: '50式应龙',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Strength', value: 32.0 },
+      { type: 'Willpower', value: 21.0 },
+      { type: 'PhysDmg', value: 23.0 }
+    ]
+  },
+  {
+    id: '动火用测温镜',
+    name: '动火用测温镜',
+    type: 'Accessory',
+    set: '动火用',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Intellect', value: 41.0 },
+      { type: 'SkillDmg', value: 41.4 }
+    ]
+  },
+  {
+    id: '碾骨面具·壹型',
+    name: '碾骨面具·壹型',
+    type: 'Accessory',
+    set: '碾骨',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Agility', value: 32.0 },
+      { type: 'Strength', value: 21.0 },
+      { type: 'CritRate', value: 10.4 }
+    ]
+  },
+  {
+    id: '悬河供氧栓',
+    name: '悬河供氧栓',
+    type: 'Accessory',
+    set: '潮涌',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Strength', value: 32.0 },
+      { type: 'Willpower', value: 21.0 },
+      { type: 'IceElecDmg', value: 23.0 }
+    ]
+  },
+  {
+    id: 'M.I.警用手套',
+    name: 'M.I.警用手套',
+    type: 'Glove',
+    set: 'M.I.警用',
+    mainStat: { type: 'Defense', value: 42.0 },
+    subStats: [
+      { type: 'Agility', value: 65.0 },
+      { type: 'Strength', value: 43.0 },
+      { type: 'SkillDmg', value: 34.5 }
+    ]
+  },
+  {
+    id: '脉冲式校准器',
+    name: '脉冲式校准器',
+    type: 'Accessory',
+    set: '脉冲式',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Intellect', value: 41.0 },
+      { type: 'ArtsPower', value: 41.0 }
+    ]
+  },
+  {
+    id: '生物辅助接驳器·壹型',
+    name: '生物辅助接驳器·壹型',
+    type: 'Accessory',
+    set: '生物辅助',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Strength', value: 32.0 },
+      { type: 'Willpower', value: 21.0 },
+      { type: 'HP', value: 41.4 }
+    ]
+  },
+  {
+    id: '蚀电屏蔽扳手',
+    name: '蚀电屏蔽扳手',
+    type: 'Accessory',
+    set: '蚀电防护',
+    mainStat: { type: 'Defense', value: 10.0 },
+    subStats: [
+      { type: 'Intellect', value: 21.0 },
+      { type: 'Attack', value: 10.5 }
+    ]
+  },
+  {
+    id: '巡行信使夹克',
+    name: '巡行信使夹克',
+    type: 'Armor',
+    set: '巡行信使',
+    mainStat: { type: 'Defense', value: 28.0 },
+    subStats: [
+      { type: 'Intellect', value: 44.0 },
+      { type: 'Agility', value: 29.0 },
+      { type: 'Attack', value: 16.0 }
+    ]
+  },
+  {
+    id: '矿场压缩核',
+    name: '矿场压缩核',
+    type: 'Accessory',
+    set: '四号谷地',
+    mainStat: { type: 'Defense', value: 10.0 },
+    subStats: [
+      { type: 'Intellect', value: 22.0 },
+      { type: 'CritRate', value: 5.7 }
+    ]
+  },
+  {
+    id: '蚀电防护扳手',
+    name: '蚀电防护扳手',
+    type: 'Accessory',
+    set: '蚀电防护',
+    mainStat: { type: 'Defense', value: 10.0 },
+    subStats: [
+      { type: 'Willpower', value: 21.0 }
+    ]
+  },
+  {
+    id: '蚀电屏蔽手套',
+    name: '蚀电屏蔽手套',
+    type: 'Glove',
+    set: '蚀电防护',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Intellect', value: 33.0 },
+      { type: 'Willpower', value: 22.0 },
+      { type: 'ArtsDmg', value: 9.2 }
+    ]
+  },
+  {
+    id: '重装信使陀螺',
+    name: '重装信使陀螺',
+    type: 'Accessory',
+    set: '重装信使',
+    mainStat: { type: 'Defense', value: 10.0 },
+    subStats: [
+      { type: 'Strength', value: 21.0 },
+      { type: 'Attack', value: 10.5 }
+    ]
+  },
+  {
+    id: '矿场传动轮',
+    name: '矿场传动轮',
+    type: 'Accessory',
+    set: '四号谷地',
+    mainStat: { type: 'Defense', value: 10.0 },
+    subStats: [
+      { type: 'Agility', value: 22.0 },
+      { type: 'CritRate', value: 5.7 }
+    ]
+  },
+  {
+    id: '蚀电防护手套',
+    name: '蚀电防护手套',
+    type: 'Glove',
+    set: '蚀电防护',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Willpower', value: 33.0 },
+      { type: 'Intellect', value: 21.0 },
+      { type: 'HealEffect', value: 8.8 }
+    ]
+  },
+  {
+    id: '蚀电屏蔽背心',
+    name: '蚀电屏蔽背心',
+    type: 'Armor',
+    set: '蚀电防护',
+    mainStat: { type: 'Defense', value: 28.0 },
+    subStats: [
+      { type: 'Intellect', value: 44.0 },
+      { type: 'Strength', value: 29.0 },
+      { type: 'Attack', value: 16.0 }
+    ]
+  },
+  {
+    id: '重装信使手电',
+    name: '重装信使手电',
+    type: 'Accessory',
+    set: '重装信使',
+    mainStat: { type: 'Defense', value: 10.0 },
+    subStats: [
+      { type: 'Strength', value: 21.0 },
+      { type: 'HP', value: 21.0 }
+    ]
+  },
+  {
+    id: '矿场增压轮',
+    name: '矿场增压轮',
+    type: 'Accessory',
+    set: '四号谷地',
+    mainStat: { type: 'Defense', value: 10.0 },
+    subStats: [
+      { type: 'Strength', value: 22.0 },
+      { type: 'ComboDmg', value: 22.8 }
+    ]
+  },
+  {
+    id: '蚀电防护背心',
+    name: '蚀电防护背心',
+    type: 'Armor',
+    set: '蚀电防护',
+    mainStat: { type: 'Defense', value: 28.0 },
+    subStats: [
+      { type: 'Willpower', value: 44.0 },
+      { type: 'Agility', value: 29.0 },
+      { type: 'HP', value: 10.5 }
+    ]
+  },
+  {
+    id: '巡行信使陀螺',
+    name: '巡行信使陀螺',
+    type: 'Accessory',
+    set: '巡行信使',
+    mainStat: { type: 'Defense', value: 10.0 },
+    subStats: [
+      { type: 'Agility', value: 21.0 },
+      { type: 'Attack', value: 10.5 }
+    ]
+  },
+  {
+    id: '重装信使手套',
+    name: '重装信使手套',
+    type: 'Glove',
+    set: '重装信使',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Strength', value: 33.0 },
+      { type: 'Willpower', value: 22.0 },
+      { type: 'DmgReduc', value: 8.0 }
+    ]
+  },
+  {
+    id: '蚀电屏蔽电池',
+    name: '蚀电屏蔽电池',
+    type: 'Accessory',
+    set: '蚀电防护',
+    mainStat: { type: 'Defense', value: 10.0 },
+    subStats: [
+      { type: 'Intellect', value: 21.0 },
+      { type: 'CritRate', value: 5.3 }
+    ]
+  },
+  {
+    id: '矿场手套·壹型',
+    name: '矿场手套·壹型',
+    type: 'Glove',
+    set: '四号谷地',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Intellect', value: 36.0 },
+      { type: 'Agility', value: 24.0 },
+      { type: 'HP', value: 19.0 }
+    ]
+  },
+  {
+    id: '巡行信使手电',
+    name: '巡行信使手电',
+    type: 'Accessory',
+    set: '巡行信使',
+    mainStat: { type: 'Defense', value: 10.0 },
+    subStats: [
+      { type: 'Agility', value: 21.0 },
+      { type: 'ComboDmg', value: 21.0 }
+    ]
+  },
+  {
+    id: '重装信使夹克',
+    name: '重装信使夹克',
+    type: 'Armor',
+    set: '重装信使',
+    mainStat: { type: 'Defense', value: 28.0 },
+    subStats: [
+      { type: 'Strength', value: 44.0 },
+      { type: 'Agility', value: 29.0 },
+      { type: 'HP', value: 10.5 }
+    ]
+  },
+  {
+    id: '蚀电屏蔽扳手·壹型',
+    name: '蚀电屏蔽扳手·壹型',
+    type: 'Accessory',
+    set: '蚀电防护',
+    mainStat: { type: 'Defense', value: 10.0 },
+    subStats: [
+      { type: 'Intellect', value: 21.0 },
+      { type: 'IceElecDmg', value: 11.7 }
+    ]
+  },
+  {
+    id: '矿场手甲·壹型',
+    name: '矿场手甲·壹型',
+    type: 'Glove',
+    set: '四号谷地',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Strength', value: 36.0 },
+      { type: 'Intellect', value: 24.0 },
+      { type: 'Attack', value: 9.5 }
+    ]
+  },
+  {
+    id: '巡行信使手套',
+    name: '巡行信使手套',
+    type: 'Glove',
+    set: '巡行信使',
+    mainStat: { type: 'Defense', value: 21.0 },
+    subStats: [
+      { type: 'Agility', value: 33.0 },
+      { type: 'Strength', value: 22.0 },
+      { type: 'PhysDmg', value: 9.7 }
+    ]
+  },
+  {
+    id: '矿场联络仪',
+    name: '矿场联络仪',
+    type: 'Accessory',
+    set: '四号谷地',
+    mainStat: { type: 'Defense', value: 10.0 },
+    subStats: [
+      { type: 'Willpower', value: 22.0 },
+      { type: 'HP', value: 22.8 }
+    ]
+  },
+  {
+    id: '蚀电防护电池',
+    name: '蚀电防护电池',
+    type: 'Accessory',
+    set: '蚀电防护',
+    mainStat: { type: 'Defense', value: 10.0 },
+    subStats: [
+      { type: 'Willpower', value: 21.0 }
+    ]
+  },
+  {
+    id: '测试型重甲',
+    name: '测试型重甲',
+    type: 'Armor',
+    set: '四号谷地',
+    mainStat: { type: 'Defense', value: 22.0 },
+    subStats: [
+      { type: 'Strength', value: 37.0 },
+      { type: 'Intellect', value: 25.0 },
+      { type: 'Attack', value: 11.0 }
+    ]
+  },
+  {
+    id: '集成化手甲',
+    name: '集成化手甲',
+    type: 'Glove',
+    set: '集成重型',
+    mainStat: { type: 'Defense', value: 16.0 },
+    subStats: [
+      { type: 'Strength', value: 23.0 },
+      { type: 'Willpower', value: 23.0 },
+      { type: 'DmgReduc', value: 6.3 }
+    ]
+  },
+  {
+    id: '矿场护手',
+    name: '矿场护手',
+    type: 'Glove',
+    set: '四号谷地',
+    mainStat: { type: 'Defense', value: 16.0 },
+    subStats: [
+      { type: 'Willpower', value: 28.0 },
+      { type: 'Intellect', value: 18.0 },
+      { type: 'HP', value: 15.0 }
+    ]
+  },
 ];
-
-export function parseStatValue(valueStr: string): number {
-  if (!valueStr) return 0;
-  // 移除百分号
-  const cleanStr = valueStr.replace('%', '');
-  return parseFloat(cleanStr);
-}
