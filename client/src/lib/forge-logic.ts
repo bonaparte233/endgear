@@ -20,7 +20,7 @@ export interface MaterialMatch {
 export function findForgeMaterials(targetEquipment: Equipment): AttributeMatch[] {
   // 1. 筛选同类型装备 (必须是同部位)
   const sameTypeEquipments = GOLD_EQUIPMENTS.filter(
-    e => e.type === targetEquipment.type && e.id !== targetEquipment.id
+    e => e.type === targetEquipment.type
   );
 
   const results: AttributeMatch[] = [];
