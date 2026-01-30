@@ -24,7 +24,13 @@ export const translations = {
       secure: '安全连接',
       better: '更优',
       standard: '标准',
-      noCompatible: '该属性无适配材料'
+      noCompatible: '该属性无适配材料',
+      candidates: '个候选方案'
+    },
+    types: {
+      Accessory: '配件',
+      Glove: '护手',
+      Armor: '护甲'
     },
     equipment: {
       Accessory: '配件',
@@ -53,7 +59,13 @@ export const translations = {
       secure: 'SECURE',
       better: 'BETTER',
       standard: 'STANDARD',
-      noCompatible: 'NO COMPATIBLE MATERIALS FOUND FOR THIS ATTRIBUTE'
+      noCompatible: 'NO COMPATIBLE MATERIALS FOUND FOR THIS ATTRIBUTE',
+      candidates: 'CANDIDATES'
+    },
+    types: {
+      Accessory: 'ACCESSORY',
+      Glove: 'GLOVE',
+      Armor: 'ARMOR'
     },
     equipment: {
       Accessory: 'ACCESSORY',
