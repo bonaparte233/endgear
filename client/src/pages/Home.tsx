@@ -4,12 +4,14 @@ import { findForgeMaterials, AttributeMatch } from '@/lib/forge-logic';
 import { EquipmentCard } from '@/components/EquipmentCard';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { ArrowRight, RefreshCw, Zap, ArrowUpCircle, MinusCircle } from 'lucide-react';
+import { ArrowRight, RefreshCw, Zap, ArrowUpCircle, MinusCircle, Languages } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/lib/i18n';
 
 export default function Home() {
   const [selectedTarget, setSelectedTarget] = useState<Equipment | null>(null);
   const [attributeMatches, setAttributeMatches] = useState<AttributeMatch[]>([]);
+  const { language, setLanguage, t } = useLanguage();
 
   const handleTargetSelect = (equipment: Equipment) => {
     setSelectedTarget(equipment);
@@ -22,29 +24,44 @@ export default function Home() {
     setAttributeMatches([]);
   };
 
+  const toggleLanguage = () => {
+    setLanguage(language === 'zh' ? 'en' : 'zh');
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col md:flex-row overflow-hidden">
       {/* 左侧面板：装备选择 */}
       <div className="w-full md:w-1/2 lg:w-5/12 border-r border-border/30 flex flex-col h-screen relative z-10 bg-background/95 backdrop-blur-sm">
         <div className="p-6 border-b border-border/30 bg-muted/20">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-8 h-8 bg-primary/20 flex items-center justify-center rounded-sm border border-primary/50">
-              <Zap className="w-5 h-5 text-primary" />
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-primary/20 flex items-center justify-center rounded-sm border border-primary/50">
+                <Zap className="w-5 h-5 text-primary" />
+              </div>
+              <h1 className="text-2xl font-display font-bold tracking-wider text-primary">ENDGEAR</h1>
             </div>
-            <h1 className="text-2xl font-display font-bold tracking-wider text-primary">ENDGEAR</h1>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggleLanguage}
+              className="text-xs font-mono border border-border/50 hover:bg-primary/10"
+            >
+              <Languages className="w-3 h-3 mr-2" />
+              {language === 'zh' ? 'EN' : '中文'}
+            </Button>
           </div>
           <p className="text-sm text-muted-foreground font-mono">
-            装备精锻辅助终端 // V1.1.0
+            {t('app.title')} // {t('app.version')}
           </p>
         </div>
 
         <div className="flex-1 overflow-hidden flex flex-col">
           <div className="p-4 bg-muted/10 border-b border-border/20 flex justify-between items-center">
             <span className="text-xs font-mono uppercase text-muted-foreground tracking-widest">
-              Select Target Equipment
+              {t('app.selectTarget')}
             </span>
             <span className="text-xs font-mono text-primary/70">
-              {GOLD_EQUIPMENTS.length} UNITS DETECTED
+              {GOLD_EQUIPMENTS.length} {t('app.unitsDetected')}
             </span>
           </div>
           
@@ -74,11 +91,11 @@ export default function Home() {
             <div className="p-6 border-b border-border/30 bg-background/80 backdrop-blur-md flex justify-between items-center">
               <div>
                 <h2 className="text-xl font-display font-bold text-foreground">
-                  FORGE ANALYSIS
+                  {t('app.analysisProtocol')}
                 </h2>
                 <div className="flex items-center gap-2 mt-1">
                   <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                  <span className="text-xs font-mono text-green-500">OPTIMIZATION READY</span>
+                  <span className="text-xs font-mono text-green-500">{t('app.optimizationReady')}</span>
                 </div>
               </div>
               <Button 
@@ -88,14 +105,14 @@ export default function Home() {
                 className="font-mono text-xs border-primary/30 hover:border-primary hover:bg-primary/10"
               >
                 <RefreshCw className="w-3 h-3 mr-2" />
-                RESET
+                {t('app.reset')}
               </Button>
             </div>
 
             {/* 目标装备展示 */}
             <div className="p-6 border-b border-border/30 bg-primary/5">
               <div className="flex items-center gap-4 mb-4">
-                <span className="text-xs font-mono bg-primary text-primary-foreground px-2 py-0.5 rounded-sm">TARGET</span>
+                <span className="text-xs font-mono bg-primary text-primary-foreground px-2 py-0.5 rounded-sm">{t('app.target')}</span>
                 <div className="h-px flex-1 bg-primary/20" />
               </div>
               <div className="flex gap-6 items-start">
@@ -123,7 +140,7 @@ export default function Home() {
                   <div key={index} className="space-y-4">
                     <div className="flex items-center gap-3">
                       <div className="bg-muted px-3 py-1 rounded-sm border border-border/50">
-                        <span className="text-sm font-mono text-muted-foreground">UPGRADE TARGET:</span>
+                        <span className="text-sm font-mono text-muted-foreground">{t('app.upgradeTarget')}:</span>
                         <span className="ml-2 font-bold text-foreground">{match.attributeName}</span>
                         <span className="ml-2 text-xs text-muted-foreground">({match.targetValue})</span>
                       </div>
@@ -153,12 +170,12 @@ export default function Home() {
                               {mat.matchType === 'Better' ? (
                                 <>
                                   <ArrowUpCircle className="w-3 h-3" />
-                                  <span>BETTER (+{mat.diff.toFixed(1)})</span>
+                                  <span>{t('app.better')} (+{mat.diff.toFixed(1)})</span>
                                 </>
                               ) : (
                                 <>
                                   <MinusCircle className="w-3 h-3" />
-                                  <span>STANDARD</span>
+                                  <span>{t('app.standard')}</span>
                                 </>
                               )}
                             </div>
@@ -167,7 +184,7 @@ export default function Home() {
                       </div>
                     ) : (
                       <div className="text-xs font-mono text-muted-foreground/50 italic pl-2 border-l-2 border-border/30">
-                        NO COMPATIBLE MATERIALS FOUND FOR THIS ATTRIBUTE
+                        {t('app.noCompatible')}
                       </div>
                     )}
                   </div>
@@ -186,12 +203,26 @@ export default function Home() {
               </div>
             </div>
             <h2 className="text-3xl font-display font-bold text-foreground mb-4 tracking-wide">
-              AWAITING INPUT
+              {t('app.awaitingInput')}
             </h2>
             <p className="text-muted-foreground font-mono max-w-md leading-relaxed">
-              Select an equipment to begin forge optimization.
-              System will analyze all three sub-attributes independently.
+              {t('app.awaitingInputDesc')}
             </p>
+            
+            <div className="mt-12 grid grid-cols-3 gap-8 text-xs font-mono text-muted-foreground/60">
+              <div className="flex flex-col items-center gap-2">
+                <div className="w-2 h-2 bg-primary/40 rounded-full" />
+                <span>{t('app.dataSync')}</span>
+              </div>
+              <div className="flex flex-col items-center gap-2">
+                <div className="w-2 h-2 bg-primary/40 rounded-full" />
+                <span>{t('app.forgeReady')}</span>
+              </div>
+              <div className="flex flex-col items-center gap-2">
+                <div className="w-2 h-2 bg-primary/40 rounded-full" />
+                <span>{t('app.secure')}</span>
+              </div>
+            </div>
           </div>
         )}
       </div>
