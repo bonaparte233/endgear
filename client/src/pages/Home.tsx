@@ -1,32 +1,25 @@
 import { useState } from 'react';
 import { Equipment, GOLD_EQUIPMENTS } from '@/lib/data';
-import { findForgeMaterials, ComparisonResult, getComparisonDetails } from '@/lib/forge-logic';
+import { findForgeMaterials, AttributeMatch } from '@/lib/forge-logic';
 import { EquipmentCard } from '@/components/EquipmentCard';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { ArrowRight, RefreshCw, Zap } from 'lucide-react';
+import { ArrowRight, RefreshCw, Zap, ArrowUpCircle, MinusCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function Home() {
   const [selectedTarget, setSelectedTarget] = useState<Equipment | null>(null);
-  const [recommendations, setRecommendations] = useState<ComparisonResult[]>([]);
+  const [attributeMatches, setAttributeMatches] = useState<AttributeMatch[]>([]);
 
   const handleTargetSelect = (equipment: Equipment) => {
     setSelectedTarget(equipment);
-    const result = findForgeMaterials(equipment);
-    
-    // 将结果转换为详细的比较结果
-    const detailedResults = [
-      ...result.recommended.map(m => getComparisonDetails(equipment, m)),
-      ...result.normal.map(m => getComparisonDetails(equipment, m))
-    ];
-    
-    setRecommendations(detailedResults);
+    const results = findForgeMaterials(equipment);
+    setAttributeMatches(results);
   };
 
   const resetSelection = () => {
     setSelectedTarget(null);
-    setRecommendations([]);
+    setAttributeMatches([]);
   };
 
   return (
@@ -41,7 +34,7 @@ export default function Home() {
             <h1 className="text-2xl font-display font-bold tracking-wider text-primary">ENDGEAR</h1>
           </div>
           <p className="text-sm text-muted-foreground font-mono">
-            装备精锻辅助终端 // V1.0.0
+            装备精锻辅助终端 // V1.1.0
           </p>
         </div>
 
@@ -81,11 +74,11 @@ export default function Home() {
             <div className="p-6 border-b border-border/30 bg-background/80 backdrop-blur-md flex justify-between items-center">
               <div>
                 <h2 className="text-xl font-display font-bold text-foreground">
-                  ANALYSIS PROTOCOL
+                  FORGE ANALYSIS
                 </h2>
                 <div className="flex items-center gap-2 mt-1">
                   <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                  <span className="text-xs font-mono text-green-500">SYSTEM ONLINE</span>
+                  <span className="text-xs font-mono text-green-500">OPTIMIZATION READY</span>
                 </div>
               </div>
               <Button 
@@ -106,16 +99,15 @@ export default function Home() {
                 <div className="h-px flex-1 bg-primary/20" />
               </div>
               <div className="flex gap-6 items-start">
-                <div className="w-24 h-24 bg-background border border-border flex items-center justify-center relative overflow-hidden group">
+                <div className="w-20 h-20 bg-background border border-border flex items-center justify-center relative overflow-hidden group">
                   <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  {/* 这里应该显示装备图片，暂时用首字母代替 */}
-                  <span className="text-4xl font-display font-bold text-muted-foreground/30">
+                  <span className="text-3xl font-display font-bold text-muted-foreground/30">
                     {selectedTarget.name[0]}
                   </span>
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold font-display text-foreground">{selectedTarget.name}</h3>
-                  <div className="flex gap-3 mt-2 text-sm font-mono text-muted-foreground">
+                  <h3 className="text-xl font-bold font-display text-foreground">{selectedTarget.name}</h3>
+                  <div className="flex gap-3 mt-1 text-sm font-mono text-muted-foreground">
                     <span>{selectedTarget.set}</span>
                     <span>/</span>
                     <span>{selectedTarget.type}</span>
@@ -124,61 +116,64 @@ export default function Home() {
               </div>
             </div>
 
-            {/* 推荐材料列表 */}
-            <div className="flex-1 overflow-hidden flex flex-col">
-              <div className="p-4 flex justify-between items-center border-b border-border/20">
-                <span className="text-xs font-mono uppercase text-muted-foreground tracking-widest">
-                  Compatible Materials
-                </span>
-                <span className="text-xs font-mono text-primary">
-                  {recommendations.length} MATCHES FOUND
-                </span>
-              </div>
-
-              <ScrollArea className="flex-1 p-6">
-                {recommendations.length > 0 ? (
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    {recommendations.map((result, idx) => (
-                      <div key={idx} className="relative">
-                        {/* 连接线装饰 */}
-                        <div className="absolute -left-3 top-1/2 w-3 h-px bg-border/50 hidden lg:block" />
-                        
-                        <EquipmentCard
-                          equipment={result.equipment}
-                          comparisonResult={{
-                            betterStats: result.betterStats,
-                            equalStats: result.equalStats
-                          }}
-                          className={cn(
-                            "border-l-4",
-                            result.isRecommended 
-                              ? "border-l-green-500 shadow-[0_0_15px_rgba(34,197,94,0.1)]" 
-                              : "border-l-yellow-500 opacity-80"
-                          )}
-                        />
-                        
-                        {/* 推荐标签 */}
-                        {result.isRecommended && (
-                          <div className="absolute -top-2 -right-2 bg-green-500 text-black text-[10px] font-bold px-2 py-0.5 transform rotate-3 shadow-sm z-10">
-                            OPTIMAL
-                          </div>
-                        )}
+            {/* 按属性分组的推荐列表 */}
+            <ScrollArea className="flex-1">
+              <div className="p-6 space-y-8">
+                {attributeMatches.map((match, index) => (
+                  <div key={index} className="space-y-4">
+                    <div className="flex items-center gap-3">
+                      <div className="bg-muted px-3 py-1 rounded-sm border border-border/50">
+                        <span className="text-sm font-mono text-muted-foreground">UPGRADE TARGET:</span>
+                        <span className="ml-2 font-bold text-foreground">{match.attributeName}</span>
+                        <span className="ml-2 text-xs text-muted-foreground">({match.targetValue})</span>
                       </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="h-full flex flex-col items-center justify-center text-muted-foreground/50 p-8 text-center border-2 border-dashed border-border/30 rounded-lg">
-                    <div className="w-16 h-16 mb-4 rounded-full bg-muted/20 flex items-center justify-center">
-                      <RefreshCw className="w-8 h-8 opacity-50" />
+                      <div className="h-px flex-1 bg-border/30" />
                     </div>
-                    <p className="font-mono text-sm">NO COMPATIBLE MATERIALS FOUND</p>
-                    <p className="text-xs mt-2 max-w-xs">
-                      Try selecting a different equipment or check your inventory data.
-                    </p>
+
+                    {match.materials.length > 0 ? (
+                      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+                        {match.materials.map((mat, mIdx) => (
+                          <div key={mIdx} className="relative group">
+                            <EquipmentCard
+                              equipment={mat.equipment}
+                              className={cn(
+                                "border-l-4 transition-all hover:translate-x-1",
+                                mat.matchType === 'Better' 
+                                  ? "border-l-green-500 bg-green-500/5" 
+                                  : "border-l-yellow-500 bg-yellow-500/5"
+                              )}
+                            />
+                            {/* 比较结果标签 */}
+                            <div className={cn(
+                              "absolute top-2 right-2 px-2 py-0.5 text-[10px] font-bold font-mono rounded-sm flex items-center gap-1",
+                              mat.matchType === 'Better' 
+                                ? "bg-green-500 text-black" 
+                                : "bg-yellow-500 text-black"
+                            )}>
+                              {mat.matchType === 'Better' ? (
+                                <>
+                                  <ArrowUpCircle className="w-3 h-3" />
+                                  <span>BETTER (+{mat.diff.toFixed(1)})</span>
+                                </>
+                              ) : (
+                                <>
+                                  <MinusCircle className="w-3 h-3" />
+                                  <span>STANDARD</span>
+                                </>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-xs font-mono text-muted-foreground/50 italic pl-2 border-l-2 border-border/30">
+                        NO COMPATIBLE MATERIALS FOUND FOR THIS ATTRIBUTE
+                      </div>
+                    )}
                   </div>
-                )}
-              </ScrollArea>
-            </div>
+                ))}
+              </div>
+            </ScrollArea>
           </div>
         ) : (
           /* 空状态引导 */
@@ -194,23 +189,9 @@ export default function Home() {
               AWAITING INPUT
             </h2>
             <p className="text-muted-foreground font-mono max-w-md leading-relaxed">
-              Select an equipment from the left panel to initiate forge analysis. System will automatically calculate optimal material combinations.
+              Select an equipment to begin forge optimization.
+              System will analyze all three sub-attributes independently.
             </p>
-            
-            <div className="mt-12 grid grid-cols-3 gap-8 text-xs font-mono text-muted-foreground/60">
-              <div className="flex flex-col items-center gap-2">
-                <div className="w-2 h-2 bg-primary/40 rounded-full" />
-                <span>DATA SYNC</span>
-              </div>
-              <div className="flex flex-col items-center gap-2">
-                <div className="w-2 h-2 bg-primary/40 rounded-full" />
-                <span>FORGE READY</span>
-              </div>
-              <div className="flex flex-col items-center gap-2">
-                <div className="w-2 h-2 bg-primary/40 rounded-full" />
-                <span>SECURE</span>
-              </div>
-            </div>
           </div>
         )}
       </div>
