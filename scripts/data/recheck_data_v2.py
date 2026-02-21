@@ -1,10 +1,12 @@
 
 import re
-import json
+from pathlib import Path
+
+DATA_FILE = Path(__file__).resolve().parents[2] / "client/src/lib/data.ts"
 
 def parse_ts_data():
     try:
-        with open('/home/ubuntu/endgear/client/src/lib/data.ts', 'r') as f:
+        with DATA_FILE.open("r", encoding="utf-8") as f:
             content = f.read()
             
         # 提取 GOLD_EQUIPMENTS 数组内容

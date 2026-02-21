@@ -1,23 +1,32 @@
-import { useState, useMemo } from 'react';
-import { GOLD_EQUIPMENTS } from '@/lib/data';
-import { Equipment } from '@/types';
+import { useState, useMemo } from "react";
+import { GOLD_EQUIPMENTS } from "@/lib/data";
+import { Equipment } from "@/types";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { findForgeMaterials, AttributeMatch } from '@/lib/forge-logic';
-import { EquipmentCard } from '@/components/EquipmentCard';
-import { Button } from '@/components/ui/button';
+import { findForgeMaterials, AttributeMatch } from "@/lib/forge-logic";
+import { EquipmentCard } from "@/components/EquipmentCard";
+import { Button } from "@/components/ui/button";
 
-import { ArrowRight, RefreshCw, Zap, ArrowUpCircle, MinusCircle, Languages } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { useLanguage } from '@/lib/i18n';
+import {
+  ArrowRight,
+  RefreshCw,
+  Zap,
+  ArrowUpCircle,
+  MinusCircle,
+  Languages,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useLanguage } from "@/lib/i18n";
 
 export default function Home() {
   const [selectedTarget, setSelectedTarget] = useState<Equipment | null>(null);
-  const [attributeMatches, setAttributeMatches] = useState<AttributeMatch[]>([]);
+  const [attributeMatches, setAttributeMatches] = useState<AttributeMatch[]>(
+    []
+  );
   const { language, setLanguage, t } = useLanguage();
 
   // 按套装分组装备
@@ -39,7 +48,7 @@ export default function Home() {
   };
 
   const toggleLanguage = () => {
-    setLanguage(language === 'zh' ? 'en' : 'zh');
+    setLanguage(language === "zh" ? "en" : "zh");
   };
 
   return (
@@ -57,19 +66,19 @@ export default function Home() {
             <div className="h-0.5 w-full bg-primary/50 mt-0.5" />
           </div>
         </div>
-        
+
         <div className="flex items-center gap-4">
           <div className="hidden md:block text-xs font-mono text-muted-foreground/60">
-            {t('app.subtitle')}
+            {t("app.subtitle")}
           </div>
-          <Button 
-            variant="ghost" 
-            size="sm" 
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={toggleLanguage}
             className="font-mono text-xs border border-border/50 hover:bg-primary/10 hover:text-primary transition-colors"
           >
             <Languages className="w-3 h-3 mr-2" />
-            {language === 'zh' ? 'EN' : '中文'}
+            {language === "zh" ? "EN" : "中文"}
           </Button>
         </div>
       </header>
@@ -83,18 +92,20 @@ export default function Home() {
         </div>
 
         {/* 左侧：装备选择面板 - 移动端全屏，桌面端固定宽度 */}
-        <div className={cn(
-          "border-r border-border bg-card/30 flex flex-col z-10 backdrop-blur-sm transition-all duration-300",
-          "w-full md:w-96 absolute md:relative inset-0 md:inset-auto",
-          selectedTarget ? "hidden md:flex" : "flex"
-        )}>
+        <div
+          className={cn(
+            "border-r border-border bg-card/30 flex flex-col z-10 backdrop-blur-sm transition-all duration-300",
+            "w-full md:w-96 absolute md:relative inset-0 md:inset-auto",
+            selectedTarget ? "hidden md:flex" : "flex"
+          )}
+        >
           <div className="p-4 border-b border-border/50 bg-card/50">
             <div className="flex items-center justify-between mb-2">
               <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
-                {t('app.selectTarget')}
+                {t("app.selectTarget")}
               </h2>
               <span className="text-[10px] font-mono bg-primary/10 text-primary px-1.5 py-0.5 rounded-sm">
-                {GOLD_EQUIPMENTS.length} {t('app.unitsDetected')}
+                {GOLD_EQUIPMENTS.length} {t("app.unitsDetected")}
               </span>
             </div>
             {/* 搜索框预留位 */}
@@ -103,47 +114,57 @@ export default function Home() {
 
           <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
             <Accordion type="multiple" className="w-full">
-              {Object.entries(groupedEquipments).map(([setName, items], idx) => (
-                <AccordionItem key={setName} value={setName} className="border-b border-border/50">
-                  <AccordionTrigger className="px-4 py-3 hover:bg-primary/5 hover:no-underline group transition-colors">
-                    <div className="flex items-center gap-2">
-                      <div className="w-1 h-1 bg-primary/50 group-hover:bg-primary transition-colors" />
-                      <span className="text-sm font-bold text-foreground/90 group-hover:text-primary transition-colors">
-                        {setName}
-                      </span>
-                      <span className="text-[10px] font-mono text-muted-foreground ml-2">
-                        [{items.length}]
-                      </span>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent className="bg-background/30">
-                    <div className="py-1">
-                      {items.map(eq => (
-                        <div 
-                          key={eq.id}
-                          onClick={() => handleSelectTarget(eq)}
-                          className={cn(
-                            "px-4 py-2 cursor-pointer border-l-2 transition-all hover:bg-primary/10 flex items-center justify-between group relative overflow-hidden",
-                            selectedTarget?.id === eq.id 
-                              ? "border-l-primary bg-primary/5" 
-                              : "border-l-transparent hover:border-l-primary/30"
-                          )}
-                        >
-                          <span className={cn(
-                            "text-sm transition-colors",
-                            selectedTarget?.id === eq.id ? "text-primary font-medium" : "text-muted-foreground group-hover:text-foreground"
-                          )}>
-                            {eq.name}
-                          </span>
-                          <span className="text-[10px] font-mono text-muted-foreground/50 uppercase">
-                            {t(`types.${eq.type}`)}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
+              {Object.entries(groupedEquipments).map(
+                ([setName, items], idx) => (
+                  <AccordionItem
+                    key={setName}
+                    value={setName}
+                    className="border-b border-border/50"
+                  >
+                    <AccordionTrigger className="px-4 py-3 hover:bg-primary/5 hover:no-underline group transition-colors">
+                      <div className="flex items-center gap-2">
+                        <div className="w-1 h-1 bg-primary/50 group-hover:bg-primary transition-colors" />
+                        <span className="text-sm font-bold text-foreground/90 group-hover:text-primary transition-colors">
+                          {setName}
+                        </span>
+                        <span className="text-[10px] font-mono text-muted-foreground ml-2">
+                          [{items.length}]
+                        </span>
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent className="bg-background/30">
+                      <div className="py-1">
+                        {items.map(eq => (
+                          <div
+                            key={eq.id}
+                            onClick={() => handleSelectTarget(eq)}
+                            className={cn(
+                              "px-4 py-2 cursor-pointer border-l-2 transition-all hover:bg-primary/10 flex items-center justify-between group relative overflow-hidden",
+                              selectedTarget?.id === eq.id
+                                ? "border-l-primary bg-primary/5"
+                                : "border-l-transparent hover:border-l-primary/30"
+                            )}
+                          >
+                            <span
+                              className={cn(
+                                "text-sm transition-colors",
+                                selectedTarget?.id === eq.id
+                                  ? "text-primary font-medium"
+                                  : "text-muted-foreground group-hover:text-foreground"
+                              )}
+                            >
+                              {eq.name}
+                            </span>
+                            <span className="text-[10px] font-mono text-muted-foreground/50 uppercase">
+                              {t(`types.${eq.type}`)}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                )
+              )}
             </Accordion>
           </div>
         </div>
@@ -153,9 +174,14 @@ export default function Home() {
           <div className="flex-1 flex flex-col min-w-0 bg-background/50 z-10 absolute md:relative inset-0 md:inset-auto overflow-y-auto md:overflow-hidden">
             {/* 移动端返回按钮 */}
             <div className="md:hidden px-4 py-2 border-b border-border bg-card/50 flex items-center">
-              <Button variant="ghost" size="sm" onClick={() => setSelectedTarget(null)} className="-ml-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setSelectedTarget(null)}
+                className="-ml-2"
+              >
                 <ArrowRight className="w-4 h-4 mr-2 rotate-180" />
-                {t('app.reset')}
+                {t("app.reset")}
               </Button>
             </div>
             {/* 目标装备概览 */}
@@ -169,7 +195,7 @@ export default function Home() {
                     IV
                   </div>
                 </div>
-                
+
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-[10px] font-mono text-primary border border-primary/30 px-1 py-px">
@@ -180,7 +206,9 @@ export default function Home() {
                     </span>
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold font-display text-foreground">{selectedTarget.name}</h3>
+                    <h3 className="text-xl font-bold font-display text-foreground">
+                      {selectedTarget.name}
+                    </h3>
                     <div className="flex gap-3 mt-1 text-sm font-mono text-muted-foreground">
                       <span>{selectedTarget.set}</span>
                       <span>/</span>
@@ -194,19 +222,33 @@ export default function Home() {
             {/* 按属性分组的推荐列表 */}
             <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
               <div className="p-6">
-                <Accordion type="multiple" defaultValue={attributeMatches.map((_, i) => `item-${i}`)} className="space-y-4">
+                <Accordion
+                  type="multiple"
+                  defaultValue={attributeMatches.map((_, i) => `item-${i}`)}
+                  className="space-y-4"
+                >
                   {attributeMatches.map((match, index) => (
-                    <AccordionItem key={index} value={`item-${index}`} className="border border-border/50 bg-card/20 px-2">
+                    <AccordionItem
+                      key={index}
+                      value={`item-${index}`}
+                      className="border border-border/50 bg-card/20 px-2"
+                    >
                       <AccordionTrigger className="hover:no-underline py-3 group">
                         <div className="flex items-center gap-3 w-full pr-4">
                           <div className="bg-muted px-3 py-1 rounded-sm border border-border/50 flex items-center group-hover:border-primary/30 transition-colors">
-                            <span className="text-sm font-mono text-muted-foreground">{t('app.upgradeTarget')}:</span>
-                            <span className="ml-2 font-bold text-foreground">{t(`stats.${match.attributeName}`)}</span>
-                            <span className="ml-2 text-xs text-muted-foreground">({match.targetValue})</span>
+                            <span className="text-sm font-mono text-muted-foreground">
+                              {t("app.upgradeTarget")}:
+                            </span>
+                            <span className="ml-2 font-bold text-foreground">
+                              {t(`stats.${match.attributeName}`)}
+                            </span>
+                            <span className="ml-2 text-xs text-muted-foreground">
+                              ({match.targetValue})
+                            </span>
                           </div>
                           <div className="h-px flex-1 bg-border/30 group-hover:bg-primary/20 transition-colors" />
                           <span className="text-xs font-mono text-muted-foreground group-hover:text-primary/70 transition-colors">
-                            {match.materials.length} {t('app.candidates')}
+                            {match.materials.length} {t("app.candidates")}
                           </span>
                         </div>
                       </AccordionTrigger>
@@ -220,27 +262,32 @@ export default function Home() {
                                     equipment={mat.equipment}
                                     className={cn(
                                       "border-l-4 transition-all",
-                                      mat.matchType === 'Better' 
-                                        ? "border-l-green-500 bg-green-500/5 hover:bg-green-500/10" 
+                                      mat.matchType === "Better"
+                                        ? "border-l-green-500 bg-green-500/5 hover:bg-green-500/10"
                                         : "border-l-yellow-500 bg-yellow-500/5 hover:bg-yellow-500/10"
                                     )}
                                   />
                                   {/* 比较结果标签 */}
-                                  <div className={cn(
-                                    "absolute top-2 right-2 px-2 py-0.5 text-[10px] font-bold font-mono rounded-sm flex items-center gap-1 shadow-sm",
-                                    mat.matchType === 'Better' 
-                                      ? "bg-green-500 text-black" 
-                                      : "bg-yellow-500 text-black"
-                                  )}>
-                                    {mat.matchType === 'Better' ? (
+                                  <div
+                                    className={cn(
+                                      "absolute top-2 right-2 px-2 py-0.5 text-[10px] font-bold font-mono rounded-sm flex items-center gap-1 shadow-sm",
+                                      mat.matchType === "Better"
+                                        ? "bg-green-500 text-black"
+                                        : "bg-yellow-500 text-black"
+                                    )}
+                                  >
+                                    {mat.matchType === "Better" ? (
                                       <>
                                         <ArrowUpCircle className="w-3 h-3" />
-                                        <span>{t('app.better')} (+{mat.diff.toFixed(1)})</span>
+                                        <span>
+                                          {t("app.better")} (+
+                                          {mat.diff.toFixed(1)})
+                                        </span>
                                       </>
                                     ) : (
                                       <>
                                         <MinusCircle className="w-3 h-3" />
-                                        <span>{t('app.standard')}</span>
+                                        <span>{t("app.standard")}</span>
                                       </>
                                     )}
                                   </div>
@@ -249,7 +296,7 @@ export default function Home() {
                             </div>
                           ) : (
                             <div className="text-xs font-mono text-muted-foreground/50 italic pl-2 border-l-2 border-border/30 py-2">
-                              {t('app.noCompatible')}
+                              {t("app.noCompatible")}
                             </div>
                           )}
                         </div>
@@ -271,24 +318,24 @@ export default function Home() {
               </div>
             </div>
             <h2 className="text-3xl font-display font-bold text-foreground mb-4 tracking-wide">
-              {t('app.awaitingInput')}
+              {t("app.awaitingInput")}
             </h2>
             <p className="text-muted-foreground font-mono max-w-md leading-relaxed">
-              {t('app.awaitingInputDesc')}
+              {t("app.awaitingInputDesc")}
             </p>
-            
+
             <div className="mt-12 grid grid-cols-3 gap-8 text-xs font-mono text-muted-foreground/60">
               <div className="flex flex-col items-center gap-2">
                 <div className="w-2 h-2 bg-primary/40 rounded-full" />
-                <span>{t('app.dataSync')}</span>
+                <span>{t("app.dataSync")}</span>
               </div>
               <div className="flex flex-col items-center gap-2">
                 <div className="w-2 h-2 bg-primary/40 rounded-full" />
-                <span>{t('app.forgeReady')}</span>
+                <span>{t("app.forgeReady")}</span>
               </div>
               <div className="flex flex-col items-center gap-2">
                 <div className="w-2 h-2 bg-primary/40 rounded-full" />
-                <span>{t('app.secure')}</span>
+                <span>{t("app.secure")}</span>
               </div>
             </div>
           </div>

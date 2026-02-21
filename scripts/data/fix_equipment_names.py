@@ -1,5 +1,7 @@
 import re
-import json
+from pathlib import Path
+
+DATA_FILE = Path(__file__).resolve().parents[2] / "client/src/lib/data.ts"
 
 # Wiki 数据映射表，Key 为去除了文件后缀的图片名（即装备名），Value 为包含完整属性的字典
 wiki_data = {
@@ -173,7 +175,7 @@ for name, data in wiki_data.items():
 ts_code += "];\n"
 
 # 写入文件
-with open('/home/ubuntu/endgear/client/src/lib/data.ts', 'w') as f:
+with DATA_FILE.open("w", encoding="utf-8") as f:
     f.write(ts_code)
 
 print("Successfully generated data.ts with corrected names and stats.")

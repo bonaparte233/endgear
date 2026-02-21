@@ -2,8 +2,9 @@
 import re
 import requests
 from bs4 import BeautifulSoup
-import json
-import os
+from pathlib import Path
+
+DATA_FILE = Path(__file__).resolve().parents[2] / "client/src/lib/data.ts"
 
 # 定义数据结构
 class Equipment:
@@ -79,7 +80,7 @@ def fetch_wiki_data():
 
 def read_local_data():
     try:
-        with open('/home/ubuntu/endgear/client/src/lib/data.ts', 'r') as f:
+        with DATA_FILE.open("r", encoding="utf-8") as f:
             content = f.read()
             
         # 简单的正则提取，用于快速验证

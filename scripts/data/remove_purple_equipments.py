@@ -1,4 +1,5 @@
 import re
+from pathlib import Path
 
 # 定义需要移除的紫色套装名称（根据 Wiki 和之前的脚本）
 purple_sets = [
@@ -9,10 +10,9 @@ purple_sets = [
     "集成重型"
 ]
 
-input_file = '/home/ubuntu/endgear/client/src/lib/data.ts'
-output_file = '/home/ubuntu/endgear/client/src/lib/data.ts'
+data_file = Path(__file__).resolve().parents[2] / "client/src/lib/data.ts"
 
-with open(input_file, 'r') as f:
+with data_file.open("r", encoding="utf-8") as f:
     content = f.read()
 
 # 使用简单的字符串包含判断来过滤
@@ -40,7 +40,7 @@ new_content = re.sub(pattern, filter_equipments, content)
 # 清理可能产生的多余空行
 new_content = re.sub(r'\n\s*\n', '\n', new_content)
 
-with open(output_file, 'w') as f:
+with data_file.open("w", encoding="utf-8") as f:
     f.write(new_content)
 
 print("Successfully removed purple equipments from data.ts")
