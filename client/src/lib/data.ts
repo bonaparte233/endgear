@@ -92,7 +92,7 @@ export const GOLD_EQUIPMENTS: Equipment[] = [
     mainStat: { type: 'Defense', value: 21.0 },
     subStats: [
       { type: 'Willpower', value: 43.0 },
-      { type: 'HealEffect', value: 21.6 }
+      { type: 'CritRate', value: 10.8 }
     ]
   },
   {
@@ -194,12 +194,12 @@ export const GOLD_EQUIPMENTS: Equipment[] = [
   {
     id: '轻超域护手',
     name: '轻超域护手',
-    type: 'Accessory',
+    type: 'Glove',
     set: '轻超域',
-    mainStat: { type: 'Defense', value: 21.0 },
+    mainStat: { type: 'Defense', value: 42.0 },
     subStats: [
-      { type: 'Agility', value: 32.0 },
-      { type: 'Strength', value: 21.0 },
+      { type: 'Strength', value: 65.0 },
+      { type: 'Willpower', value: 43.0 },
       { type: 'ArtsPower', value: 34.0 }
     ]
   },
@@ -485,7 +485,7 @@ export const GOLD_EQUIPMENTS: Equipment[] = [
     mainStat: { type: 'Defense', value: 42.0 },
     subStats: [
       { type: 'Intellect', value: 65.0 },
-      { type: 'Strength', value: 43.0 },
+      { type: 'Willpower', value: 43.0 },
       { type: 'CritRate', value: 8.6 }
     ]
   },
@@ -498,6 +498,18 @@ export const GOLD_EQUIPMENTS: Equipment[] = [
     subStats: [
       { type: 'Agility', value: 87.0 },
       { type: 'Intellect', value: 58.0 },
+      { type: 'SkillDmg', value: 20.7 }
+    ]
+  },
+  {
+    id: '拓荒护甲·壹型',
+    name: '拓荒护甲·壹型',
+    type: 'Armor',
+    set: '拓荒',
+    mainStat: { type: 'Defense', value: 56.0 },
+    subStats: [
+      { type: 'Strength', value: 87.0 },
+      { type: 'Agility', value: 58.0 },
       { type: 'SkillDmg', value: 20.7 }
     ]
   },
@@ -517,7 +529,7 @@ export const GOLD_EQUIPMENTS: Equipment[] = [
     name: '长息辅助臂',
     type: 'Accessory',
     set: '长息',
-    mainStat: { type: 'Defense', value: 21.0 },
+    mainStat: { type: 'Defense', value: 42.0 },
     subStats: [
       { type: 'Willpower', value: 32.0 },
       { type: 'Intellect', value: 21.0 },
@@ -525,8 +537,8 @@ export const GOLD_EQUIPMENTS: Equipment[] = [
     ]
   },
   {
-    id: '点剑战术手套点剑',
-    name: '点剑战术手套点剑',
+    id: '点剑战术手套',
+    name: '点剑战术手套',
     type: 'Glove',
     set: '点剑',
     mainStat: { type: 'Defense', value: 42.0 },
@@ -692,8 +704,8 @@ export const GOLD_EQUIPMENTS: Equipment[] = [
     ]
   },
   {
-    id: '点剑重装甲点剑',
-    name: '点剑重装甲点剑',
+    id: '点剑重装甲',
+    name: '点剑重装甲',
     type: 'Armor',
     set: '点剑',
     mainStat: { type: 'Defense', value: 56.0 },
