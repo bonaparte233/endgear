@@ -1,3 +1,0 @@
-- [ ] 修改 `data.ts`：补回缺失的 `parseStatValue` 函数
-- [ ] 修改 `Home.tsx`：引入 `Accordion` 组件，将右侧精锻结果改为折叠展示
-- [ ] 确保 `Accordion` 的样式与整体工业机能风保持一致
