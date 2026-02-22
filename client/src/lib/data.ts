@@ -198,8 +198,8 @@ export const GOLD_EQUIPMENTS: Equipment[] = [
     set: "轻超域",
     mainStat: { type: "Defense", value: 42.0 },
     subStats: [
-      { type: "Strength", value: 65.0 },
-      { type: "Willpower", value: 43.0 },
+      { type: "Agility", value: 65.0 },
+      { type: "Strength", value: 43.0 },
       { type: "ArtsPower", value: 34.0 },
     ],
   },
