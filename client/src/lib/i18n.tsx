@@ -28,6 +28,13 @@ export const translations = {
       standard: "标准",
       noCompatible: "该属性无适配材料",
       candidates: "个候选方案",
+      searchPlaceholder: "检索装备 / 套组 / 部位",
+      searchHint: "输入装备名、套组名或部位",
+      searchResults: "个结果匹配",
+      searchActive: "检索中",
+      clearSearch: "清空检索",
+      searchEmpty: "未找到匹配目标",
+      searchEmptyDesc: "请尝试更换关键词，支持装备名、套组名和部位。",
     },
     types: {
       Accessory: "配件",
@@ -92,6 +99,14 @@ export const translations = {
       standard: "STANDARD",
       noCompatible: "NO COMPATIBLE MATERIALS FOUND FOR THIS ATTRIBUTE",
       candidates: "CANDIDATES",
+      searchPlaceholder: "SEARCH EQUIPMENT / SET / SLOT",
+      searchHint: "Query by item name, set, or slot",
+      searchResults: "MATCHES",
+      searchActive: "SEARCHING",
+      clearSearch: "Clear search",
+      searchEmpty: "NO MATCHING TARGETS",
+      searchEmptyDesc:
+        "Try a different keyword. Search supports equipment names, set names, and slot labels.",
     },
     types: {
       Accessory: "ACCESSORY",

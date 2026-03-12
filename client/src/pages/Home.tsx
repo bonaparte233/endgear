@@ -1,6 +1,6 @@
-import { useState, useMemo } from "react";
+import { useDeferredValue, useMemo, useState } from "react";
 import { GOLD_EQUIPMENTS } from "@/lib/data";
-import { Equipment } from "@/types";
+import { Equipment, EquipmentType } from "@/types";
 import {
   Accordion,
   AccordionContent,
@@ -18,28 +18,68 @@ import {
   ArrowUpCircle,
   MinusCircle,
   Languages,
+  Search,
+  X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/lib/i18n";
+
+const SEARCH_TOKEN_MAP: Record<EquipmentType, string[]> = {
+  Accessory: ["Accessory", "配件"],
+  Glove: ["Glove", "护手"],
+  Armor: ["Armor", "护甲"],
+};
 
 export default function Home() {
   const [selectedTarget, setSelectedTarget] = useState<Equipment | null>(null);
   const [attributeMatches, setAttributeMatches] = useState<AttributeMatch[]>(
     []
   );
+  const [searchTerm, setSearchTerm] = useState("");
+  const [openSets, setOpenSets] = useState<string[]>([]);
   const { language, setLanguage, t } = useLanguage();
+  const deferredSearchTerm = useDeferredValue(searchTerm);
+  const normalizedSearchTerm = deferredSearchTerm.trim().toLowerCase();
+
+  const filteredEquipments = useMemo(() => {
+    if (!normalizedSearchTerm) {
+      return GOLD_EQUIPMENTS;
+    }
+
+    return GOLD_EQUIPMENTS.filter(eq => {
+      const searchableFields = [
+        eq.name,
+        eq.id,
+        eq.set,
+        ...SEARCH_TOKEN_MAP[eq.type],
+      ];
+
+      return searchableFields.some(field =>
+        field.toLowerCase().includes(normalizedSearchTerm)
+      );
+    });
+  }, [normalizedSearchTerm]);
 
   // 按套装分组装备
   const groupedEquipments = useMemo(() => {
     const groups: Record<string, Equipment[]> = {};
-    GOLD_EQUIPMENTS.forEach(eq => {
+    filteredEquipments.forEach(eq => {
       if (!groups[eq.set]) {
         groups[eq.set] = [];
       }
       groups[eq.set].push(eq);
     });
     return groups;
-  }, []);
+  }, [filteredEquipments]);
+
+  const groupEntries = useMemo(
+    () => Object.entries(groupedEquipments),
+    [groupedEquipments]
+  );
+
+  const visibleAccordionItems = normalizedSearchTerm
+    ? groupEntries.map(([setName]) => setName)
+    : openSets;
 
   const handleSelectTarget = (equipment: Equipment) => {
     setSelectedTarget(equipment);
@@ -108,14 +148,62 @@ export default function Home() {
                 {GOLD_EQUIPMENTS.length} {t("app.unitsDetected")}
               </span>
             </div>
-            {/* 搜索框预留位 */}
             <div className="h-1 w-8 bg-primary/50 mb-1" />
+            <div className="mt-3 border border-border/60 bg-background/70 clip-corners relative overflow-hidden">
+              <div className="absolute inset-y-0 left-0 w-10 flex items-center justify-center border-r border-border/40 bg-primary/5">
+                <Search className="w-4 h-4 text-primary/80" />
+              </div>
+              <input
+                value={searchTerm}
+                onChange={event => setSearchTerm(event.target.value)}
+                placeholder={t("app.searchPlaceholder")}
+                className="w-full bg-transparent pl-12 pr-12 py-2.5 text-sm font-mono text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
+              />
+              {searchTerm ? (
+                <button
+                  type="button"
+                  onClick={() => setSearchTerm("")}
+                  aria-label={t("app.clearSearch")}
+                  className="absolute inset-y-0 right-0 w-10 flex items-center justify-center text-muted-foreground/60 hover:text-primary hover:bg-primary/5 transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              ) : (
+                <div className="absolute inset-y-0 right-0 w-10 flex items-center justify-center">
+                  <div className="w-1.5 h-1.5 bg-primary/50 animate-pulse" />
+                </div>
+              )}
+            </div>
+            <div className="mt-2 flex items-center justify-between text-[10px] font-mono uppercase tracking-wide">
+              <span className="text-muted-foreground/70">
+                {normalizedSearchTerm
+                  ? `${filteredEquipments.length} ${t("app.searchResults")}`
+                  : t("app.searchHint")}
+              </span>
+              <span
+                className={cn(
+                  "px-1.5 py-0.5 border transition-colors",
+                  normalizedSearchTerm
+                    ? "border-primary/40 text-primary bg-primary/10"
+                    : "border-border/50 text-muted-foreground/50"
+                )}
+              >
+                {normalizedSearchTerm
+                  ? t("app.searchActive")
+                  : t("app.analysisProtocol")}
+              </span>
+            </div>
           </div>
 
           <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
-            <Accordion type="multiple" className="w-full">
-              {Object.entries(groupedEquipments).map(
-                ([setName, items], idx) => (
+            {groupEntries.length > 0 ? (
+              <Accordion
+                type="multiple"
+                className="w-full"
+                value={visibleAccordionItems}
+                onValueChange={setOpenSets}
+              >
+                {groupEntries.map(([setName, items]) => (
                   <AccordionItem
                     key={setName}
                     value={setName}
@@ -163,9 +251,23 @@ export default function Home() {
                       </div>
                     </AccordionContent>
                   </AccordionItem>
-                )
-              )}
-            </Accordion>
+                ))}
+              </Accordion>
+            ) : (
+              <div className="px-4 py-6">
+                <div className="tech-border bg-card/30 px-4 py-5">
+                  <div className="flex items-center gap-2 text-primary mb-2">
+                    <Search className="w-4 h-4" />
+                    <span className="text-xs font-mono uppercase tracking-[0.2em]">
+                      {t("app.searchEmpty")}
+                    </span>
+                  </div>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {t("app.searchEmptyDesc")}
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
