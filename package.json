@@ -11,6 +11,7 @@
     "start:server": "NODE_ENV=production node dist/index.js",
     "preview": "vite preview --host",
     "check": "tsc --noEmit",
+    "sync:gold": "node scripts/data/sync_akedata_gold.mjs",
     "format": "prettier --write .",
     "clean": "rm -rf dist"
   },

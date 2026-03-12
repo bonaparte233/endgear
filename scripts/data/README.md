@@ -6,5 +6,6 @@
 - `recheck_data.py`: 基础完整性检查
 - `recheck_data_v2.py`: 结构化字段检查
 - `remove_purple_equipments.py`: 过滤紫装套装数据
+- `sync_akedata_gold.mjs`: 从 `http://akedata.top/` 抓取五星装备并重建 `GOLD_EQUIPMENTS`
 
 所有脚本均使用相对项目根目录路径，不依赖机器上的绝对路径。
