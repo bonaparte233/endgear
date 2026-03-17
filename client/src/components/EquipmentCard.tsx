@@ -1,6 +1,7 @@
 import { Equipment } from "@/types";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/lib/i18n";
+import { Ticket } from "lucide-react";
 
 interface EquipmentCardProps {
   equipment: Equipment;
@@ -20,7 +21,10 @@ export function EquipmentCard({
   className,
   comparisonResult,
 }: EquipmentCardProps) {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
+  const formattedDispatchCost = equipment.dispatchCost.toLocaleString(
+    language === "zh" ? "zh-CN" : "en-US"
+  );
 
   return (
     <div
@@ -44,12 +48,25 @@ export function EquipmentCard({
             <h3 className="font-display font-bold text-lg leading-tight tracking-wide text-foreground group-hover:text-primary transition-colors">
               {equipment.name}
             </h3>
-            <div className="flex gap-2 mt-1 text-xs text-muted-foreground font-mono uppercase">
+            <div className="flex flex-wrap gap-2 mt-1 text-xs text-muted-foreground font-mono uppercase">
               <span className="bg-muted px-1.5 py-0.5">
                 {t(`types.${equipment.type}`)}
               </span>
               <span className="border border-border px-1.5 py-0.5">
                 {equipment.set}
+              </span>
+              <span
+                className={cn(
+                  "inline-flex items-center gap-1 border px-1.5 py-0.5 transition-colors",
+                  equipment.dispatchCost > 8000
+                    ? "border-primary/30 bg-primary/10 text-primary"
+                    : "border-border/70 text-muted-foreground/80"
+                )}
+              >
+                <Ticket className="w-3 h-3" />
+                <span>
+                  {t("app.dispatchCost")} {formattedDispatchCost}
+                </span>
               </span>
             </div>
           </div>

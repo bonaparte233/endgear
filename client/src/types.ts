@@ -36,6 +36,7 @@ export interface Equipment {
   name: string;
   type: EquipmentType;
   set: string;
+  dispatchCost: number;
   mainStat: Stat;
   subStats: Stat[];
 }

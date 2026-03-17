@@ -34,20 +34,62 @@ const STAT_TYPE_MAP = {
   源石技艺强度: "ArtsPower",
   物理伤害加成: "PhysDmg",
   治疗效果加成: "HealEffect",
+  治疗效率加成: "HealEffect",
   寒冷和电磁伤害提升: "IceElecDmg",
+  寒冷和电磁伤害: "IceElecDmg",
   灼热和自然伤害提升: "FireNatDmg",
+  灼热和自然伤害: "FireNatDmg",
   全伤害减免: "DmgReduc",
   对失衡目标伤害加成: "BreakDmg",
   普通攻击伤害加成: "NormalDmg",
   所有技能伤害提升: "AllSkillDmg",
+  所有技能伤害: "AllSkillDmg",
   Main: "MainStat",
   Sub: "SubStat",
+  主能力: "MainStat",
+  副能力: "SubStat",
   法术伤害: "ArtsDmg",
 };
 
 const STANDALONE_SET_MAP = {
   wuling: "武陵",
 };
+
+const HIGH_DISPATCH_COST_EQUIPMENTS = new Set([
+  "纾难重甲",
+  "纾难护甲",
+  "纾难护手",
+  "纾难手套",
+  "拓荒护服",
+  "拓荒纤维手套",
+  "拓荒通信器",
+  "拓荒分析仪",
+  "拓荒供氧栓",
+  "50式应龙重甲·壹型",
+  "50式应龙重甲·贰型",
+  "50式应龙雷达·壹型",
+  "50式应龙雷达·贰型",
+  "碾骨腕带",
+  "碾骨腕带·壹型",
+  "碾骨面具·贰型",
+  "碾骨重护甲·贰型",
+  "M.I.警用罩衣·壹型",
+  "M.I.警用刺刃",
+  "M.I.警用护甲·壹型",
+  "M.I.警用手套·壹型",
+  "M.I.警用瞄具·壹型",
+  "动火用辅助骨骼",
+  "动火用手套",
+  "生物辅助接驳器·贰型",
+  "点剑轻装甲",
+  "点剑定位信标",
+  "点剑微型滤芯",
+  "轻超域轻护手",
+  "轻超域稳定盘·壹型",
+  "轻超域腕表",
+  "脉冲式探针",
+  "脉冲式侵入核",
+]);
 
 function round1(value) {
   return Math.round((value + Number.EPSILON) * 10) / 10;
@@ -75,6 +117,31 @@ function inferSetName(suit, itemId) {
   );
 
   return matchedEntry ? matchedEntry[1] : suit.name;
+}
+
+function inferEquipmentType(rawSlot, itemId, name) {
+  const mappedType = SLOT_TYPE_MAP[rawSlot];
+  if (mappedType) {
+    return mappedType;
+  }
+
+  if (itemId.includes("_hand_")) {
+    return "Glove";
+  }
+
+  if (itemId.includes("_body_")) {
+    return "Armor";
+  }
+
+  if (itemId.includes("_edc_")) {
+    return "Accessory";
+  }
+
+  throw new Error(`Unknown slot type for ${name}: ${rawSlot} (${itemId})`);
+}
+
+function inferDispatchCost(name) {
+  return HIGH_DISPATCH_COST_EQUIPMENTS.has(name) ? 16000 : 8000;
 }
 
 async function fetchJson(url) {
@@ -106,12 +173,8 @@ async function loadRemoteGoldEquipments() {
       }
 
       const name = item.name.trim();
-      const type = SLOT_TYPE_MAP[item["部位"]];
+      const type = inferEquipmentType(item["部位"], item.itemId, name);
       const mainStatType = STAT_TYPE_MAP[item["主词条"].desc];
-
-      if (!type) {
-        throw new Error(`Unknown slot type for ${name}: ${item["部位"]}`);
-      }
 
       if (!mainStatType) {
         throw new Error(
@@ -136,6 +199,7 @@ async function loadRemoteGoldEquipments() {
         name,
         type,
         set: inferSetName(suit, item.itemId),
+        dispatchCost: inferDispatchCost(name),
         mainStat: {
           type: mainStatType,
           value: round1(item["主词条"].value),
@@ -181,6 +245,8 @@ function buildDiffSummary(local, remote) {
     const isSame =
       JSON.stringify(localItem.type) === JSON.stringify(remoteItem.type) &&
       JSON.stringify(localItem.set) === JSON.stringify(remoteItem.set) &&
+      JSON.stringify(localItem.dispatchCost) ===
+        JSON.stringify(remoteItem.dispatchCost) &&
       JSON.stringify(localItem.mainStat) ===
         JSON.stringify(remoteItem.mainStat) &&
       JSON.stringify(localItem.subStats) ===
@@ -211,6 +277,7 @@ function renderTypeScript(equipments) {
     lines.push(`    name: ${JSON.stringify(equipment.name)},`);
     lines.push(`    type: ${JSON.stringify(equipment.type)},`);
     lines.push(`    set: ${JSON.stringify(equipment.set)},`);
+    lines.push(`    dispatchCost: ${equipment.dispatchCost},`);
     lines.push(
       `    mainStat: { type: ${JSON.stringify(equipment.mainStat.type)}, value: ${equipment.mainStat.value} },`
     );

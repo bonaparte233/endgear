@@ -66,11 +66,24 @@ function processAttribute(
     }
   });
 
-  // 排序：Better 优先，然后按数值降序
+  // 排序：优先看匹配质量，再看调度券消耗，最后才按数值降序
   materials.sort((a, b) => {
     if (a.matchType === "Better" && b.matchType !== "Better") return -1;
     if (b.matchType === "Better" && a.matchType !== "Better") return 1;
-    return b.value - a.value;
+
+    const dispatchCostDiff =
+      a.equipment.dispatchCost - b.equipment.dispatchCost;
+    if (dispatchCostDiff !== 0) return dispatchCostDiff;
+
+    if (b.value !== a.value) {
+      return b.value - a.value;
+    }
+
+    if (b.diff !== a.diff) {
+      return b.diff - a.diff;
+    }
+
+    return a.equipment.name.localeCompare(b.equipment.name, "zh-Hans-CN");
   });
 
   return {
