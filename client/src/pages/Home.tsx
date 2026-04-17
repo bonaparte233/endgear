@@ -100,9 +100,14 @@ export default function Home() {
             <Zap className="w-5 h-5 text-primary" />
           </div>
           <div>
-            <h1 className="text-lg font-bold font-display tracking-wider text-foreground">
-              ENDGEAR
-            </h1>
+            <div className="flex items-center gap-2">
+              <h1 className="text-lg font-bold font-display tracking-wider text-foreground">
+                ENDGEAR
+              </h1>
+              <span className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.16em] text-primary border border-primary/35 bg-primary/10 px-2 py-0.5 whitespace-nowrap">
+                {t("app.versionHint")}
+              </span>
+            </div>
             <div className="h-0.5 w-full bg-primary/50 mt-0.5" />
           </div>
         </div>

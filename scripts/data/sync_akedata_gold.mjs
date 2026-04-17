@@ -7,6 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT = path.resolve(__dirname, "..", "..");
 const DATA_FILE = path.join(ROOT, "client", "src", "lib", "data.ts");
+const SUPPLEMENTAL_DATA_FILE = path.join(__dirname, "gold_supplements.json");
 
 const HEADERS = {
   "User-Agent": "Mozilla/5.0",
@@ -43,6 +44,7 @@ const STAT_TYPE_MAP = {
   对失衡目标伤害加成: "BreakDmg",
   普通攻击伤害加成: "NormalDmg",
   所有技能伤害提升: "AllSkillDmg",
+  所有技能伤害加成: "AllSkillDmg",
   所有技能伤害: "AllSkillDmg",
   Main: "MainStat",
   Sub: "SubStat",
@@ -54,6 +56,28 @@ const STAT_TYPE_MAP = {
 const STANDALONE_SET_MAP = {
   wuling: "武陵",
 };
+
+const TOP_DISPATCH_COST_EQUIPMENTS = [
+  "清波重甲",
+  "清波轻甲",
+  "清波手甲",
+  "清波护手",
+  "清波定位仪",
+  "清波竹刃",
+  "清波水罐",
+  "壤流轻甲",
+  "壤流护手",
+  "壤流短棍",
+  "拓荒纤维手套·壹型",
+  "拓荒增量供氧栓·壹型",
+  "碾骨手套",
+  "碾骨小雕像·贰型",
+  "点剑重装甲·壹型",
+  "点剑战术手甲·壹型",
+  "点剑短刃",
+];
+
+const TOP_DISPATCH_COST_EQUIPMENT_SET = new Set(TOP_DISPATCH_COST_EQUIPMENTS);
 
 const HIGH_DISPATCH_COST_EQUIPMENTS = new Set([
   "纾难重甲",
@@ -141,6 +165,10 @@ function inferEquipmentType(rawSlot, itemId, name) {
 }
 
 function inferDispatchCost(name) {
+  if (TOP_DISPATCH_COST_EQUIPMENT_SET.has(name)) {
+    return 25000;
+  }
+
   return HIGH_DISPATCH_COST_EQUIPMENTS.has(name) ? 16000 : 8000;
 }
 
@@ -210,6 +238,33 @@ async function loadRemoteGoldEquipments() {
   }
 
   return equipments;
+}
+
+async function loadSupplementalEquipments() {
+  const text = await fs.readFile(SUPPLEMENTAL_DATA_FILE, "utf8");
+  const equipments = JSON.parse(text);
+
+  if (!Array.isArray(equipments)) {
+    throw new Error("Supplemental gold equipments must be an array");
+  }
+
+  return equipments;
+}
+
+function mergeSupplementalEquipments(baseEquipments, supplementalEquipments) {
+  const merged = [...baseEquipments];
+  const existingNames = new Set(baseEquipments.map(item => item.name));
+
+  for (const equipment of supplementalEquipments) {
+    if (existingNames.has(equipment.name)) {
+      continue;
+    }
+
+    merged.push(equipment);
+    existingNames.add(equipment.name);
+  }
+
+  return merged;
 }
 
 async function loadLocalEquipments() {
@@ -298,10 +353,12 @@ function renderTypeScript(equipments) {
 }
 
 async function main() {
-  const [local, remote] = await Promise.all([
+  const [local, remoteBase, supplemental] = await Promise.all([
     loadLocalEquipments(),
     loadRemoteGoldEquipments(),
+    loadSupplementalEquipments(),
   ]);
+  const remote = mergeSupplementalEquipments(remoteBase, supplemental);
 
   const diff = buildDiffSummary(local, remote);
   const output = renderTypeScript(remote);

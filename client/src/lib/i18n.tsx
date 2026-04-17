@@ -7,6 +7,7 @@ export const translations = {
     app: {
       title: "装备精锻辅助终端",
       version: "V1.2.0",
+      versionHint: "适配终末地 1.2 版本",
       subtitle: "终末地工业 · 装备精锻",
       reset: "重置",
       selectTarget: "选择目标装备",
@@ -78,6 +79,7 @@ export const translations = {
     app: {
       title: "FORGE ASSIST TERMINAL",
       version: "V1.2.0",
+      versionHint: "Compatible with Endfield 1.2",
       subtitle: "ENDGEAR INDUSTRIES · FORGE",
       reset: "RESET",
       selectTarget: "SELECT TARGET EQUIPMENT",

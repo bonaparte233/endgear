@@ -1,0 +1,223 @@
+[
+  {
+    "id": "清波重甲",
+    "name": "清波重甲",
+    "type": "Armor",
+    "set": "清波",
+    "dispatchCost": 25000,
+    "mainStat": { "type": "Defense", "value": 56 },
+    "subStats": [
+      { "type": "Agility", "value": 87 },
+      { "type": "Strength", "value": 58 },
+      { "type": "UltRecharge", "value": 12.3 }
+    ]
+  },
+  {
+    "id": "清波轻甲",
+    "name": "清波轻甲",
+    "type": "Armor",
+    "set": "清波",
+    "dispatchCost": 25000,
+    "mainStat": { "type": "Defense", "value": 56 },
+    "subStats": [
+      { "type": "Intellect", "value": 87 },
+      { "type": "Willpower", "value": 58 },
+      { "type": "ArtsPower", "value": 20 }
+    ]
+  },
+  {
+    "id": "清波手甲",
+    "name": "清波手甲",
+    "type": "Glove",
+    "set": "清波",
+    "dispatchCost": 25000,
+    "mainStat": { "type": "Defense", "value": 42 },
+    "subStats": [
+      { "type": "Agility", "value": 65 },
+      { "type": "Strength", "value": 43 },
+      { "type": "AllSkillDmg", "value": 23 }
+    ]
+  },
+  {
+    "id": "清波护手",
+    "name": "清波护手",
+    "type": "Glove",
+    "set": "清波",
+    "dispatchCost": 25000,
+    "mainStat": { "type": "Defense", "value": 42 },
+    "subStats": [
+      { "type": "Intellect", "value": 65 },
+      { "type": "Willpower", "value": 43 },
+      { "type": "UltRecharge", "value": 20.5 }
+    ]
+  },
+  {
+    "id": "清波定位仪",
+    "name": "清波定位仪",
+    "type": "Accessory",
+    "set": "清波",
+    "dispatchCost": 25000,
+    "mainStat": { "type": "Defense", "value": 21 },
+    "subStats": [
+      { "type": "Agility", "value": 32 },
+      { "type": "Strength", "value": 21 },
+      { "type": "SkillDmg", "value": 41.4 }
+    ]
+  },
+  {
+    "id": "清波竹刃",
+    "name": "清波竹刃",
+    "type": "Accessory",
+    "set": "清波",
+    "dispatchCost": 25000,
+    "mainStat": { "type": "Defense", "value": 21 },
+    "subStats": [
+      { "type": "Strength", "value": 32 },
+      { "type": "Agility", "value": 21 },
+      { "type": "FireNatDmg", "value": 23 }
+    ]
+  },
+  {
+    "id": "清波水罐",
+    "name": "清波水罐",
+    "type": "Accessory",
+    "set": "清波",
+    "dispatchCost": 25000,
+    "mainStat": { "type": "Defense", "value": 21 },
+    "subStats": [
+      { "type": "Intellect", "value": 32 },
+      { "type": "Willpower", "value": 21 },
+      { "type": "ArtsPower", "value": 41 }
+    ]
+  },
+  {
+    "id": "壤流轻甲",
+    "name": "壤流轻甲",
+    "type": "Armor",
+    "set": "壤流",
+    "dispatchCost": 25000,
+    "mainStat": { "type": "Defense", "value": 56 },
+    "subStats": [
+      { "type": "Willpower", "value": 87 },
+      { "type": "Intellect", "value": 58 },
+      { "type": "IceElecDmg", "value": 11.5 }
+    ]
+  },
+  {
+    "id": "壤流护手",
+    "name": "壤流护手",
+    "type": "Glove",
+    "set": "壤流",
+    "dispatchCost": 25000,
+    "mainStat": { "type": "Defense", "value": 42 },
+    "subStats": [
+      { "type": "Willpower", "value": 65 },
+      { "type": "Intellect", "value": 43 },
+      { "type": "IceElecDmg", "value": 19.2 }
+    ]
+  },
+  {
+    "id": "壤流短棍",
+    "name": "壤流短棍",
+    "type": "Accessory",
+    "set": "壤流",
+    "dispatchCost": 25000,
+    "mainStat": { "type": "Defense", "value": 21 },
+    "subStats": [
+      { "type": "Willpower", "value": 32 },
+      { "type": "Intellect", "value": 21 },
+      { "type": "SkillDmg", "value": 41.4 }
+    ]
+  },
+  {
+    "id": "拓荒纤维手套·壹型",
+    "name": "拓荒纤维手套·壹型",
+    "type": "Glove",
+    "set": "拓荒",
+    "dispatchCost": 25000,
+    "mainStat": { "type": "Defense", "value": 42 },
+    "subStats": [
+      { "type": "Intellect", "value": 65 },
+      { "type": "Agility", "value": 43 },
+      { "type": "UltRecharge", "value": 20.5 }
+    ]
+  },
+  {
+    "id": "拓荒增量供氧栓·壹型",
+    "name": "拓荒增量供氧栓·壹型",
+    "type": "Accessory",
+    "set": "拓荒",
+    "dispatchCost": 25000,
+    "mainStat": { "type": "Defense", "value": 21 },
+    "subStats": [
+      { "type": "Intellect", "value": 32 },
+      { "type": "Agility", "value": 21 },
+      { "type": "SubStat", "value": 20.7 }
+    ]
+  },
+  {
+    "id": "碾骨手套",
+    "name": "碾骨手套",
+    "type": "Glove",
+    "set": "碾骨",
+    "dispatchCost": 25000,
+    "mainStat": { "type": "Defense", "value": 42 },
+    "subStats": [
+      { "type": "Willpower", "value": 65 },
+      { "type": "Agility", "value": 43 },
+      { "type": "IceElecDmg", "value": 19.2 }
+    ]
+  },
+  {
+    "id": "碾骨小雕像·贰型",
+    "name": "碾骨小雕像·贰型",
+    "type": "Accessory",
+    "set": "碾骨",
+    "dispatchCost": 25000,
+    "mainStat": { "type": "Defense", "value": 21 },
+    "subStats": [
+      { "type": "Willpower", "value": 32 },
+      { "type": "Intellect", "value": 21 },
+      { "type": "SkillDmg", "value": 41.4 }
+    ]
+  },
+  {
+    "id": "点剑重装甲·壹型",
+    "name": "点剑重装甲·壹型",
+    "type": "Armor",
+    "set": "点剑",
+    "dispatchCost": 25000,
+    "mainStat": { "type": "Defense", "value": 56 },
+    "subStats": [
+      { "type": "Agility", "value": 87 },
+      { "type": "Strength", "value": 58 },
+      { "type": "PhysDmg", "value": 11.5 }
+    ]
+  },
+  {
+    "id": "点剑战术手甲·壹型",
+    "name": "点剑战术手甲·壹型",
+    "type": "Glove",
+    "set": "点剑",
+    "dispatchCost": 25000,
+    "mainStat": { "type": "Defense", "value": 42 },
+    "subStats": [
+      { "type": "Strength", "value": 65 },
+      { "type": "Willpower", "value": 43 },
+      { "type": "ArtsPower", "value": 34 }
+    ]
+  },
+  {
+    "id": "点剑短刃",
+    "name": "点剑短刃",
+    "type": "Accessory",
+    "set": "点剑",
+    "dispatchCost": 25000,
+    "mainStat": { "type": "Defense", "value": 21 },
+    "subStats": [
+      { "type": "Agility", "value": 32 },
+      { "type": "Strength", "value": 21 },
+      { "type": "UltDmg", "value": 51.8 }
+    ]
+  }
+]
