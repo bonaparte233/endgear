@@ -29,7 +29,6 @@ npx pnpm build:full
 client/              前端应用
 server/              生产静态服务
 scripts/data/        装备数据清洗与检查脚本
-docs/                过程文档和设计记录
 ```
 
 ## 许可证
