@@ -1,5 +1,6 @@
 import { Equipment, Stat } from "../types";
 import { GOLD_EQUIPMENTS } from "./data";
+import { getEquipmentSortLabel } from "./equipment-translations";
 
 export type MatchType = "Better" | "Standard" | "Incompatible";
 
@@ -83,7 +84,11 @@ function processAttribute(
       return b.diff - a.diff;
     }
 
-    return a.equipment.name.localeCompare(b.equipment.name, "zh-Hans-CN");
+    return getEquipmentSortLabel(a.equipment).localeCompare(
+      getEquipmentSortLabel(b.equipment),
+      "en",
+      { sensitivity: "base" }
+    );
   });
 
   return {

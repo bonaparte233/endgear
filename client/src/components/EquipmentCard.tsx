@@ -1,4 +1,8 @@
 import { Equipment } from "@/types";
+import {
+  getEquipmentDisplayName,
+  getSetDisplayName,
+} from "@/lib/equipment-translations";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/lib/i18n";
 
@@ -27,10 +31,12 @@ export function EquipmentCard({
   comparisonResult,
 }: EquipmentCardProps) {
   const { language, t } = useLanguage();
+  const displayName = getEquipmentDisplayName(equipment, language);
+  const displaySet = getSetDisplayName(equipment.set, language);
   const formattedDispatchCost = equipment.dispatchCost.toLocaleString(
     language === "zh" ? "zh-CN" : "en-US"
   );
-  const showIdReadout = equipment.id !== equipment.name;
+  const showIdReadout = equipment.id !== displayName;
   const badgeToneClass =
     comparisonBadge?.tone === "better"
       ? "border-emerald-400/45 bg-emerald-400/12 text-emerald-300"
@@ -59,13 +65,13 @@ export function EquipmentCard({
                 showIdReadout && "mt-1.5"
               )}
             >
-              {equipment.name}
+              {displayName}
             </h3>
             <div className="mt-1.5 flex flex-wrap gap-1 text-[8px] font-mono uppercase tracking-[0.12em] sm:mt-2 sm:gap-1.5 sm:text-[9px] sm:tracking-[0.14em]">
               <span className="hud-chip-muted">
                 {t(`types.${equipment.type}`)}
               </span>
-              <span className="hud-chip-muted">{equipment.set}</span>
+              <span className="hud-chip-muted">{displaySet}</span>
             </div>
           </div>
           {comparisonBadge ? (

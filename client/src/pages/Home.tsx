@@ -1,5 +1,10 @@
 import { useDeferredValue, useMemo, useState } from "react";
 import { GOLD_EQUIPMENTS } from "@/lib/data";
+import {
+  getEquipmentDisplayName,
+  getEquipmentSearchTerms,
+  getSetDisplayName,
+} from "@/lib/equipment-translations";
 import { Equipment, EquipmentType } from "@/types";
 import {
   Accordion,
@@ -52,9 +57,7 @@ export default function Home() {
 
     return GOLD_EQUIPMENTS.filter(equipment => {
       const searchableFields = [
-        equipment.name,
-        equipment.id,
-        equipment.set,
+        ...getEquipmentSearchTerms(equipment),
         ...SEARCH_TOKEN_MAP[equipment.type],
       ];
 
@@ -112,6 +115,12 @@ export default function Home() {
   const selectedTargetSetInventory = selectedTarget
     ? (SET_SIZE_MAP[selectedTarget.set] ?? 0)
     : 0;
+  const selectedTargetDisplayName = selectedTarget
+    ? getEquipmentDisplayName(selectedTarget, language)
+    : "";
+  const selectedTargetDisplaySet = selectedTarget
+    ? getSetDisplayName(selectedTarget.set, language)
+    : "";
 
   const handleSelectTarget = (equipment: Equipment) => {
     setSelectedTarget(equipment);
@@ -317,64 +326,71 @@ export default function Home() {
                   value={visibleAccordionItems}
                   onValueChange={setOpenSets}
                 >
-                  {groupEntries.map(([setName, items]) => (
-                    <AccordionItem
-                      key={setName}
-                      value={setName}
-                      className="hud-panel-soft overflow-hidden border-primary/10"
-                    >
-                      <AccordionTrigger className="px-2.5 py-2 hover:bg-primary/5 sm:px-3 sm:py-2.5">
-                        <div className="flex items-center gap-2.5">
-                          <div className="h-1.5 w-1.5 border border-primary/30 bg-primary/20 sm:h-2 sm:w-2" />
-                          <div className="flex items-baseline gap-1.5 sm:gap-2">
-                            <span className="text-[12px] font-semibold tracking-[0.02em] text-foreground/92 sm:text-[13px] sm:tracking-[0.03em]">
-                              {setName}
-                            </span>
-                            <span className="text-[8px] font-mono uppercase tracking-[0.1em] text-muted-foreground/60 sm:text-[9px] sm:tracking-[0.12em]">
-                              [{formatCount(items.length)}]
-                            </span>
-                          </div>
-                        </div>
-                      </AccordionTrigger>
-                      <AccordionContent className="border-t border-primary/10 bg-background/15">
-                        <div className="grid gap-px bg-primary/8">
-                          {items.map(equipment => (
-                            <button
-                              key={equipment.id}
-                              type="button"
-                              onClick={() => handleSelectTarget(equipment)}
-                              className={cn(
-                                "group flex w-full items-center justify-between gap-2.5 bg-background/20 px-2.5 py-2 text-left transition-colors sm:gap-3 sm:px-3 sm:py-2.5",
-                                selectedTarget?.id === equipment.id
-                                  ? "bg-primary/12 text-primary"
-                                  : "hover:bg-primary/6"
-                              )}
-                            >
-                              <div className="min-w-0">
-                                <div
-                                  className={cn(
-                                    "truncate text-[12px] tracking-[0.01em] transition-colors sm:text-[13px] sm:tracking-[0.02em]",
-                                    selectedTarget?.id === equipment.id
-                                      ? "font-semibold text-primary"
-                                      : "text-foreground/88 group-hover:text-foreground"
-                                  )}
-                                >
-                                  {equipment.name}
-                                </div>
-                                <div className="mt-0.5 text-[8px] font-mono uppercase tracking-[0.1em] text-muted-foreground/55 sm:text-[9px] sm:tracking-[0.12em]">
-                                  {t(`types.${equipment.type}`)} ·{" "}
-                                  {formatCount(equipment.dispatchCost)}
-                                </div>
-                              </div>
-                              <span className="hidden shrink-0 font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground/65 sm:block">
-                                {t(`types.${equipment.type}`)}
+                  {groupEntries.map(([setName, items]) => {
+                    const displaySetName = getSetDisplayName(setName, language);
+
+                    return (
+                      <AccordionItem
+                        key={setName}
+                        value={setName}
+                        className="hud-panel-soft overflow-hidden border-primary/10"
+                      >
+                        <AccordionTrigger className="px-2.5 py-2 hover:bg-primary/5 sm:px-3 sm:py-2.5">
+                          <div className="flex items-center gap-2.5">
+                            <div className="h-1.5 w-1.5 border border-primary/30 bg-primary/20 sm:h-2 sm:w-2" />
+                            <div className="flex items-baseline gap-1.5 sm:gap-2">
+                              <span className="text-[12px] font-semibold tracking-[0.02em] text-foreground/92 sm:text-[13px] sm:tracking-[0.03em]">
+                                {displaySetName}
                               </span>
-                            </button>
-                          ))}
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
+                              <span className="text-[8px] font-mono uppercase tracking-[0.1em] text-muted-foreground/60 sm:text-[9px] sm:tracking-[0.12em]">
+                                [{formatCount(items.length)}]
+                              </span>
+                            </div>
+                          </div>
+                        </AccordionTrigger>
+                        <AccordionContent className="border-t border-primary/10 bg-background/15">
+                          <div className="grid gap-px bg-primary/8">
+                            {items.map(equipment => (
+                              <button
+                                key={equipment.id}
+                                type="button"
+                                onClick={() => handleSelectTarget(equipment)}
+                                className={cn(
+                                  "group flex w-full items-center justify-between gap-2.5 bg-background/20 px-2.5 py-2 text-left transition-colors sm:gap-3 sm:px-3 sm:py-2.5",
+                                  selectedTarget?.id === equipment.id
+                                    ? "bg-primary/12 text-primary"
+                                    : "hover:bg-primary/6"
+                                )}
+                              >
+                                <div className="min-w-0">
+                                  <div
+                                    className={cn(
+                                      "truncate text-[12px] tracking-[0.01em] transition-colors sm:text-[13px] sm:tracking-[0.02em]",
+                                      selectedTarget?.id === equipment.id
+                                        ? "font-semibold text-primary"
+                                        : "text-foreground/88 group-hover:text-foreground"
+                                    )}
+                                  >
+                                    {getEquipmentDisplayName(
+                                      equipment,
+                                      language
+                                    )}
+                                  </div>
+                                  <div className="mt-0.5 text-[8px] font-mono uppercase tracking-[0.1em] text-muted-foreground/55 sm:text-[9px] sm:tracking-[0.12em]">
+                                    {t(`types.${equipment.type}`)} ·{" "}
+                                    {formatCount(equipment.dispatchCost)}
+                                  </div>
+                                </div>
+                                <span className="hidden shrink-0 font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground/65 sm:block">
+                                  {t(`types.${equipment.type}`)}
+                                </span>
+                              </button>
+                            ))}
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    );
+                  })}
                 </Accordion>
               ) : (
                 <div className="px-1 pt-4">
@@ -413,13 +429,13 @@ export default function Home() {
                           <span className="hud-chip">
                             {t("app.targetBrief")}
                           </span>
-                          {selectedTarget.id !== selectedTarget.name ? (
+                          {selectedTarget.id !== selectedTargetDisplayName ? (
                             <span className="hud-chip-muted">
                               ID {selectedTarget.id}
                             </span>
                           ) : null}
                           <span className="hud-chip-muted">
-                            {selectedTarget.set} /{" "}
+                            {selectedTargetDisplaySet} /{" "}
                             {t(`types.${selectedTarget.type}`)}
                           </span>
                           <span className="hud-chip-muted sm:hidden">
@@ -429,7 +445,7 @@ export default function Home() {
                         </div>
 
                         <h3 className="mt-1 text-[1.45rem] font-display font-bold tracking-[0.04em] text-foreground sm:mt-2 sm:text-[1.8rem] sm:tracking-[0.06em] lg:text-[1.95rem]">
-                          {selectedTarget.name}
+                          {selectedTargetDisplayName}
                         </h3>
 
                         <div className="mt-1.5 grid grid-cols-2 gap-1 sm:mt-2.5 sm:grid-cols-3 sm:gap-2">
