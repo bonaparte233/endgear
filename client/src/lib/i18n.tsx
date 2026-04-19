@@ -1,6 +1,71 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from "react";
 
 export type Language = "zh" | "en";
+
+const LANGUAGE_STORAGE_KEY = "endgear-language";
+const DEFAULT_LANGUAGE: Language = "zh";
+const BROWSER_FALLBACK_LANGUAGE: Language = "en";
+
+function isSupportedLanguage(value: string | null): value is Language {
+  return value === "zh" || value === "en";
+}
+
+function matchSupportedLanguage(locale: string): Language | undefined {
+  const normalizedLocale = locale.toLowerCase();
+
+  if (normalizedLocale.startsWith("zh")) {
+    return "zh";
+  }
+
+  if (normalizedLocale.startsWith("en")) {
+    return "en";
+  }
+
+  return undefined;
+}
+
+function detectBrowserLanguage(): Language {
+  if (typeof navigator === "undefined") {
+    return DEFAULT_LANGUAGE;
+  }
+
+  const candidates = [...(navigator.languages ?? []), navigator.language];
+  for (const candidate of candidates) {
+    if (typeof candidate !== "string" || candidate.length === 0) {
+      continue;
+    }
+
+    const matchedLanguage = matchSupportedLanguage(candidate);
+    if (matchedLanguage) {
+      return matchedLanguage;
+    }
+  }
+
+  return BROWSER_FALLBACK_LANGUAGE;
+}
+
+function getInitialLanguage(): Language {
+  if (typeof window === "undefined") {
+    return DEFAULT_LANGUAGE;
+  }
+
+  try {
+    const storedLanguage = window.localStorage.getItem(LANGUAGE_STORAGE_KEY);
+    if (isSupportedLanguage(storedLanguage)) {
+      return storedLanguage;
+    }
+  } catch {
+    // Ignore storage access failures and fall back to browser detection.
+  }
+
+  return detectBrowserLanguage();
+}
 
 export const translations = {
   zh: {
@@ -192,7 +257,21 @@ const LanguageContext = createContext<LanguageContextType | undefined>(
 );
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>("zh");
+  const [language, setLanguage] = useState<Language>(getInitialLanguage);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        window.localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
+      } catch {
+        // Ignore storage write failures and keep runtime state only.
+      }
+    }
+
+    if (typeof document !== "undefined") {
+      document.documentElement.lang = language === "zh" ? "zh-CN" : "en";
+    }
+  }, [language]);
 
   const t = (path: string) => {
     const keys = path.split(".");
