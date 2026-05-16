@@ -1360,7 +1360,7 @@ export const GOLD_EQUIPMENTS: Equipment[] = [
     subStats: [
       { type: "Intellect", value: 87 },
       { type: "Willpower", value: 58 },
-      { type: "ArtsPower", value: 20 },
+      { type: "ArtsPower", value: 20.7 },
     ],
   },
   {
@@ -1425,7 +1425,7 @@ export const GOLD_EQUIPMENTS: Equipment[] = [
     subStats: [
       { type: "Intellect", value: 32 },
       { type: "Willpower", value: 21 },
-      { type: "ArtsPower", value: 41 },
+      { type: "ArtsPower", value: 41.4 },
     ],
   },
   {
@@ -1542,7 +1542,7 @@ export const GOLD_EQUIPMENTS: Equipment[] = [
     subStats: [
       { type: "Strength", value: 65 },
       { type: "Willpower", value: 43 },
-      { type: "ArtsPower", value: 34 },
+      { type: "ArtsPower", value: 34.5 },
     ],
   },
   {
@@ -1555,7 +1555,7 @@ export const GOLD_EQUIPMENTS: Equipment[] = [
     subStats: [
       { type: "Agility", value: 32 },
       { type: "Strength", value: 21 },
-      { type: "UltDmg", value: 51.8 },
+      { type: "UltDmg", value: 51.7 },
     ],
   },
 ];
