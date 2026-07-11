@@ -26,6 +26,7 @@ const STAT_TYPE_MAP = {
   意志: "Willpower",
   防御力: "Defense",
   生命值: "HP",
+  最大生命值: "HP",
   攻击力: "Attack",
   暴击率: "CritRate",
   连携技伤害加成: "ComboDmg",
@@ -63,8 +64,15 @@ const TOP_DISPATCH_COST_EQUIPMENTS = [
   "清波手甲",
   "清波护手",
   "清波定位仪",
+  "清波定位仪·壹型",
   "清波竹刃",
   "清波水罐",
+  "旧锋装甲",
+  "旧锋装甲·壹型",
+  "旧锋手甲",
+  "旧锋手甲·壹型",
+  "旧锋刺刃",
+  "旧锋刺刃·壹型",
   "壤流轻甲",
   "壤流护手",
   "壤流短棍",
@@ -75,6 +83,7 @@ const TOP_DISPATCH_COST_EQUIPMENTS = [
   "点剑重装甲·壹型",
   "点剑战术手甲·壹型",
   "点剑短刃",
+  "点剑纤维护甲",
 ];
 
 const TOP_DISPATCH_COST_EQUIPMENT_SET = new Set(TOP_DISPATCH_COST_EQUIPMENTS);
@@ -359,6 +368,12 @@ async function main() {
     loadSupplementalEquipments(),
   ]);
   const remote = mergeSupplementalEquipments(remoteBase, supplemental);
+  const localOrder = new Map(local.map((item, index) => [item.name, index]));
+  remote.sort(
+    (a, b) =>
+      (localOrder.get(a.name) ?? local.length) -
+      (localOrder.get(b.name) ?? local.length)
+  );
 
   const diff = buildDiffSummary(local, remote);
   const output = renderTypeScript(remote);

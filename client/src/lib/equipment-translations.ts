@@ -10,6 +10,7 @@ const SET_NAME_EN_BY_ZH: Record<string, string> = {
   拓荒: "Frontiers",
   武陵: "Wuling Stock Redistribution",
   清波: "Qingbo",
+  旧锋: "Grizzled Edge",
   潮涌: "Tide Surge",
   点剑: "Swordmancer",
   生物辅助: "LYNX",
@@ -129,8 +130,15 @@ const EQUIPMENT_NAME_EN_BY_ZH: Record<string, string> = {
   清波手甲: "Qingbo Gauntlets",
   清波护手: "Qingbo Gloves",
   清波定位仪: "Qingbo Positioning Kit",
+  "清波定位仪·壹型": "Qingbo Positioning Kit T1",
   清波竹刃: "Qingbo Bamboo Cutter",
   清波水罐: "Qingbo Cask",
+  旧锋装甲: "Grizzled Edge Armor",
+  "旧锋装甲·壹型": "Grizzled Edge Armor T1",
+  旧锋手甲: "Grizzled Edge Gauntlets",
+  "旧锋手甲·壹型": "Grizzled Edge Gauntlets T1",
+  旧锋刺刃: "Grizzled Edge Push Knife",
+  "旧锋刺刃·壹型": "Grizzled Edge Push Knife T1",
   壤流轻甲: "Xiranflow Light Armor",
   壤流护手: "Xiranflow Gloves",
   壤流短棍: "Xiranflow Baton",
@@ -141,6 +149,7 @@ const EQUIPMENT_NAME_EN_BY_ZH: Record<string, string> = {
   "点剑重装甲·壹型": "Swordmancer Heavy Armor T1",
   "点剑战术手甲·壹型": "Swordmancer TAC Gauntlets T1",
   点剑短刃: "Swordmancer Dagger",
+  点剑纤维护甲: "Swordmancer Fiber Armor",
 };
 
 export function getEquipmentDisplayName(
