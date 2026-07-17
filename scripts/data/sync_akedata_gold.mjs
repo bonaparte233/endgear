@@ -13,123 +13,53 @@ const HEADERS = {
   "User-Agent": "Mozilla/5.0",
 };
 
-const SLOT_TYPE_MAP = {
-  护手: "Glove",
-  护甲: "Armor",
-  配件: "Accessory",
+const TABLE_ROOT = "https://www.akedata.wiki/public/TableCfg";
+
+const PART_TYPE_MAP = {
+  0: "Armor",
+  1: "Glove",
+  2: "Accessory",
 };
 
-const STAT_TYPE_MAP = {
-  力量: "Strength",
-  智识: "Intellect",
-  敏捷: "Agility",
-  意志: "Willpower",
-  防御力: "Defense",
-  生命值: "HP",
-  最大生命值: "HP",
-  攻击力: "Attack",
-  暴击率: "CritRate",
-  连携技伤害加成: "ComboDmg",
-  战技伤害加成: "SkillDmg",
-  终结技充能效率: "UltRecharge",
-  终结技伤害加成: "UltDmg",
-  源石技艺强度: "ArtsPower",
-  物理伤害加成: "PhysDmg",
-  治疗效果加成: "HealEffect",
-  治疗效率加成: "HealEffect",
-  寒冷和电磁伤害提升: "IceElecDmg",
-  寒冷和电磁伤害: "IceElecDmg",
-  灼热和自然伤害提升: "FireNatDmg",
-  灼热和自然伤害: "FireNatDmg",
-  全伤害减免: "DmgReduc",
-  对失衡目标伤害加成: "BreakDmg",
-  普通攻击伤害加成: "NormalDmg",
-  所有技能伤害提升: "AllSkillDmg",
-  所有技能伤害加成: "AllSkillDmg",
-  所有技能伤害: "AllSkillDmg",
+const ATTRIBUTE_TYPE_MAP = {
+  1: "HP",
+  3: "Defense",
+  9: "CritRate",
+  17: "NormalDmg",
+  28: "UltDmg",
+  29: "HealEffect",
+  32: "SkillDmg",
+  33: "ComboDmg",
+  39: "Strength",
+  40: "Agility",
+  41: "Intellect",
+  42: "Willpower",
+  44: "UltRecharge",
+  50: "PhysDmg",
+  61: "BreakDmg",
+  87: "ArtsPower",
+};
+
+const COMPOSITE_STAT_TYPE_MAP = {
+  AllDamageTakenScalar: "DmgReduc",
+  AllSkillDamageIncrease: "AllSkillDmg",
+  CrystAndPulseDamageIncrease: "IceElecDmg",
+  FireAndNaturalDamageIncrease: "FireNatDmg",
   Main: "MainStat",
+  SpellDamageIncrease: "ArtsDmg",
   Sub: "SubStat",
-  主能力: "MainStat",
-  副能力: "SubStat",
-  法术伤害: "ArtsDmg",
 };
 
 const STANDALONE_SET_MAP = {
   wuling: "武陵",
 };
 
-const TOP_DISPATCH_COST_EQUIPMENTS = [
-  "清波重甲",
-  "清波轻甲",
-  "清波手甲",
-  "清波护手",
-  "清波定位仪",
-  "清波定位仪·壹型",
-  "清波竹刃",
-  "清波水罐",
-  "旧锋装甲",
-  "旧锋装甲·壹型",
-  "旧锋手甲",
-  "旧锋手甲·壹型",
-  "旧锋刺刃",
-  "旧锋刺刃·壹型",
-  "壤流轻甲",
-  "壤流护手",
-  "壤流短棍",
-  "拓荒纤维手套·壹型",
-  "拓荒增量供氧栓·壹型",
-  "碾骨手套",
-  "碾骨小雕像·贰型",
-  "点剑重装甲·壹型",
-  "点剑战术手甲·壹型",
-  "点剑短刃",
-  "点剑纤维护甲",
-];
-
-const TOP_DISPATCH_COST_EQUIPMENT_SET = new Set(TOP_DISPATCH_COST_EQUIPMENTS);
-
-const HIGH_DISPATCH_COST_EQUIPMENTS = new Set([
-  "纾难重甲",
-  "纾难护甲",
-  "纾难护手",
-  "纾难手套",
-  "拓荒护服",
-  "拓荒纤维手套",
-  "拓荒通信器",
-  "拓荒分析仪",
-  "拓荒供氧栓",
-  "50式应龙重甲·壹型",
-  "50式应龙重甲·贰型",
-  "50式应龙雷达·壹型",
-  "50式应龙雷达·贰型",
-  "碾骨腕带",
-  "碾骨腕带·壹型",
-  "碾骨面具·贰型",
-  "碾骨重护甲·贰型",
-  "M.I.警用罩衣·壹型",
-  "M.I.警用刺刃",
-  "M.I.警用护甲·壹型",
-  "M.I.警用手套·壹型",
-  "M.I.警用瞄具·壹型",
-  "动火用辅助骨骼",
-  "动火用手套",
-  "生物辅助接驳器·贰型",
-  "点剑轻装甲",
-  "点剑定位信标",
-  "点剑微型滤芯",
-  "轻超域轻护手",
-  "轻超域稳定盘·壹型",
-  "轻超域腕表",
-  "脉冲式探针",
-  "脉冲式侵入核",
-]);
-
 function round1(value) {
   return Math.round((value + Number.EPSILON) * 10) / 10;
 }
 
-function normalizeStatValue(desc, value) {
-  if (desc === "全伤害减免") {
+function normalizeStatValue(statType, value) {
+  if (statType === "DmgReduc") {
     return round1((1 - value) * 100);
   }
 
@@ -140,113 +70,140 @@ function normalizeStatValue(desc, value) {
   return round1(value);
 }
 
-function inferSetName(suit, itemId) {
-  if (suit.suitID !== "suit_none") {
-    return suit.name;
+function resolveText(reference, i18n) {
+  if (typeof reference === "string") {
+    return reference;
+  }
+
+  return reference?.text || i18n[String(reference?.id)] || "";
+}
+
+function inferSetName(suitName, itemId) {
+  if (suitName) {
+    return suitName;
   }
 
   const matchedEntry = Object.entries(STANDALONE_SET_MAP).find(([key]) =>
     itemId.includes(key)
   );
 
-  return matchedEntry ? matchedEntry[1] : suit.name;
+  if (!matchedEntry) {
+    throw new Error(`Unknown standalone set for ${itemId}`);
+  }
+
+  return matchedEntry[1];
 }
 
-function inferEquipmentType(rawSlot, itemId, name) {
-  const mappedType = SLOT_TYPE_MAP[rawSlot];
-  if (mappedType) {
-    return mappedType;
+function inferEquipmentType(partType, name) {
+  const type = PART_TYPE_MAP[partType];
+  if (!type) {
+    throw new Error(`Unknown part type for ${name}: ${partType}`);
   }
 
-  if (itemId.includes("_hand_")) {
-    return "Glove";
-  }
-
-  if (itemId.includes("_body_")) {
-    return "Armor";
-  }
-
-  if (itemId.includes("_edc_")) {
-    return "Accessory";
-  }
-
-  throw new Error(`Unknown slot type for ${name}: ${rawSlot} (${itemId})`);
+  return type;
 }
 
-function inferDispatchCost(name) {
-  if (TOP_DISPATCH_COST_EQUIPMENT_SET.has(name)) {
-    return 25000;
+function inferStatType(modifier, name) {
+  const statType =
+    COMPOSITE_STAT_TYPE_MAP[modifier.compositeAttr] ||
+    ATTRIBUTE_TYPE_MAP[modifier.attrType];
+
+  if (!statType) {
+    throw new Error(
+      `Unknown stat for ${name}: ${modifier.attrType}/${modifier.compositeAttr}`
+    );
   }
 
-  return HIGH_DISPATCH_COST_EQUIPMENTS.has(name) ? 16000 : 8000;
+  return statType;
 }
 
-async function fetchJson(url) {
+function inferDispatchCost(itemId, reverse, formulas, chains) {
+  const formula = formulas[reverse[itemId]];
+  const defaultChain = chains[formula?.level]?.chainList?.find(
+    chain => chain.isDefault
+  );
+
+  if (!defaultChain) {
+    throw new Error(`Missing dispatch cost for ${itemId}`);
+  }
+
+  return defaultChain.costGoldNum;
+}
+
+async function fetchTable(name) {
+  const url = `${TABLE_ROOT}/${name}.json`;
   const response = await fetch(url, { headers: HEADERS });
   if (!response.ok) {
     throw new Error(`Failed to fetch ${url}: HTTP ${response.status}`);
   }
 
-  return response.json();
+  const text = await response.text();
+  return JSON.parse(
+    text.replace(/("id"\s*:\s*)(-?\d{16,})(?=\s*[,}])/g, '$1"$2"')
+  );
 }
 
 async function loadRemoteGoldEquipments() {
-  const manifest = await fetchJson(
-    "http://akedata.top/public/CH/equip/manifest.json"
+  const [equipments, items, suits, i18n, reverse, formulas, chains] =
+    await Promise.all([
+      fetchTable("EquipTable"),
+      fetchTable("ItemTable"),
+      fetchTable("EquipSuitTable"),
+      fetchTable("I18nTextTable_CN"),
+      fetchTable("EquipFormulaReverseTable"),
+      fetchTable("EquipFormulaTable"),
+      fetchTable("EquipFormulaChainTable"),
+    ]);
+
+  const suitNames = new Map(
+    Object.entries(suits).map(([suitId, suit]) => [
+      suitId,
+      resolveText(suit.list?.[0]?.suitName, i18n).trim(),
+    ])
   );
 
-  const suits = manifest
-    .filter(item => item.rarity === 5 && !item.hidden)
-    .sort((a, b) => (a.priority ?? 999) - (b.priority ?? 999));
+  const result = [];
 
-  const equipments = [];
+  for (const [itemId, equipment] of Object.entries(equipments)) {
+    const item = items[itemId];
+    if (!itemId.startsWith("item_equip_t4_") || item?.rarity !== 5) {
+      continue;
+    }
 
-  for (const suit of suits) {
-    const data = await fetchJson(`http://akedata.top${suit.contentFile}`);
+    const name = resolveText(item.name, i18n).trim();
+    if (!name) {
+      throw new Error(`Missing equipment name for ${itemId}`);
+    }
 
-    for (const item of Object.values(data.equip ?? {})) {
-      if (item.rarity !== 5) {
-        continue;
-      }
-
-      const name = item.name.trim();
-      const type = inferEquipmentType(item["部位"], item.itemId, name);
-      const mainStatType = STAT_TYPE_MAP[item["主词条"].desc];
-
-      if (!mainStatType) {
-        throw new Error(
-          `Unknown main stat for ${name}: ${item["主词条"].desc}`
-        );
-      }
-
-      const subStats = Object.values(item["副词条"] ?? {}).map(stat => {
-        const statType = STAT_TYPE_MAP[stat.desc];
-        if (!statType) {
-          throw new Error(`Unknown sub stat for ${name}: ${stat.desc}`);
-        }
-
+    const mainStatType = inferStatType(
+      equipment.displayBaseAttrModifier,
+      name
+    );
+    const subStats = [...(equipment.displayAttrModifiers ?? [])]
+      .sort((a, b) => a.attrIndex - b.attrIndex)
+      .map(modifier => {
+        const statType = inferStatType(modifier, name);
         return {
           type: statType,
-          value: normalizeStatValue(stat.desc, stat.value[0]),
+          value: normalizeStatValue(statType, modifier.attrValue),
         };
       });
 
-      equipments.push({
-        id: name,
-        name,
-        type,
-        set: inferSetName(suit, item.itemId),
-        dispatchCost: inferDispatchCost(name),
-        mainStat: {
-          type: mainStatType,
-          value: round1(item["主词条"].value),
-        },
-        subStats,
-      });
-    }
+    result.push({
+      id: name,
+      name,
+      type: inferEquipmentType(equipment.partType, name),
+      set: inferSetName(suitNames.get(equipment.suitID), itemId),
+      dispatchCost: inferDispatchCost(itemId, reverse, formulas, chains),
+      mainStat: {
+        type: mainStatType,
+        value: round1(equipment.displayBaseAttrModifier.attrValue),
+      },
+      subStats,
+    });
   }
 
-  return equipments;
+  return result;
 }
 
 async function loadSupplementalEquipments() {
