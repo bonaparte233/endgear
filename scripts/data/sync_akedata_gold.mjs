@@ -175,6 +175,11 @@ async function loadRemoteGoldEquipments() {
       throw new Error(`Missing equipment name for ${itemId}`);
     }
 
+    const set = inferSetName(suitNames.get(equipment.suitID), itemId);
+    if (set === "集成实训") {
+      continue;
+    }
+
     const mainStatType = inferStatType(
       equipment.displayBaseAttrModifier,
       name
@@ -193,7 +198,7 @@ async function loadRemoteGoldEquipments() {
       id: name,
       name,
       type: inferEquipmentType(equipment.partType, name),
-      set: inferSetName(suitNames.get(equipment.suitID), itemId),
+      set,
       dispatchCost: inferDispatchCost(itemId, reverse, formulas, chains),
       mainStat: {
         type: mainStatType,
