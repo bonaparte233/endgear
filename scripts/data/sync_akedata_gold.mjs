@@ -13,7 +13,24 @@ const HEADERS = {
   "User-Agent": "Mozilla/5.0",
 };
 
-const TABLE_ROOT = "https://www.akedata.wiki/public/TableCfg";
+const DATA_ROOT = "https://data.akedata.wiki";
+const tableRootPromise = fetch(`${DATA_ROOT}/manifest.json`, {
+  headers: HEADERS,
+}).then(async response => {
+  if (!response.ok) {
+    throw new Error(`Failed to fetch data manifest: HTTP ${response.status}`);
+  }
+
+  const manifest = await response.json();
+  const latest = manifest.versions?.find(
+    version => version.id === manifest.latest
+  );
+  if (!latest?.tableCfgPath) {
+    throw new Error("Latest data version is missing from the manifest");
+  }
+
+  return `${DATA_ROOT}/${latest.tableCfgPath}`;
+});
 
 const PART_TYPE_MAP = {
   0: "Armor",
@@ -131,7 +148,7 @@ function inferDispatchCost(itemId, reverse, formulas, chains) {
 }
 
 async function fetchTable(name) {
-  const url = `${TABLE_ROOT}/${name}.json`;
+  const url = `${await tableRootPromise}/${name}.json`;
   const response = await fetch(url, { headers: HEADERS });
   if (!response.ok) {
     throw new Error(`Failed to fetch ${url}: HTTP ${response.status}`);
@@ -180,10 +197,7 @@ async function loadRemoteGoldEquipments() {
       continue;
     }
 
-    const mainStatType = inferStatType(
-      equipment.displayBaseAttrModifier,
-      name
-    );
+    const mainStatType = inferStatType(equipment.displayBaseAttrModifier, name);
     const subStats = [...(equipment.displayAttrModifiers ?? [])]
       .sort((a, b) => a.attrIndex - b.attrIndex)
       .map(modifier => {

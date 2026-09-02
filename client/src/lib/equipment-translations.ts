@@ -8,6 +8,7 @@ const SET_NAME_EN_BY_ZH: Record<string, string> = {
   动火用: "Hot Work",
   壤流: "Xiranflow",
   拓荒: "Frontiers",
+  险关: "Deep Rampart",
   武陵: "Wuling Stock Redistribution",
   清波: "Qingbo",
   旧锋: "Grizzled Edge",
@@ -164,6 +165,15 @@ const EQUIPMENT_NAME_EN_BY_ZH: Record<string, string> = {
   涉渊护手: "Rift Trekker Gloves",
   涉渊手套: "Rift Trekker Hands",
   涉渊护甲板: "Rift Trekker Armor Slab",
+  "浊流切割炬·壹型": "Turbid Cutting Torch T1",
+  沉水手套: "Deepsink Gloves",
+  "落潮轻甲·壹型": "Tide Fall Light Armor T1",
+  长息重护板: "Eternal Xiranite Heavy Slab",
+  涌浪重装甲: "Wave Swell Heavy Armor",
+  险关装甲: "Deep Rampart Armor",
+  险关通信器: "Deep Rampart Comms",
+  险关手甲: "Deep Rampart Gauntlets",
+  "长息加固板·壹型": "Eternal Xiranite Bracing Slab T1",
 };
 
 export function getEquipmentDisplayName(
